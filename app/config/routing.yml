@@ -1,12 +1,7 @@
-_welcome:
+_home:
     pattern:  /
-    defaults: { _controller: AcmeDemoBundle:Welcome:index }
+    defaults: { _controller: FlockMainBundle:Default:index }
 
-_demo_secured:
-    resource: "@AcmeDemoBundle/Controller/SecuredController.php"
+_flock_default:
+    resource: "@FlockMainBundle/Controller/DefaultController.php"
     type:     annotation
-
-_demo:
-    resource: "@AcmeDemoBundle/Controller/DemoController.php"
-    type:     annotation
-    prefix:   /demo

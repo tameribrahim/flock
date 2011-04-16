@@ -50,7 +50,7 @@ doctrine:
         entity_managers:
             default:
                 mappings:
-                    AcmeDemoBundle: ~
+                    FlockMainBundle: ~
 
 # Swiftmailer Configuration
 swiftmailer:

@@ -1,0 +1,6 @@
+[submodule "vendor/bundles/FOS/TwitterBundle"]
+	path = vendor/bundles/FOS/TwitterBundle
+	url = git@github.com:kertz/TwitterBundle.git
+[submodule "vendor/bundles/FOS/UserBundle"]
+	path = vendor/bundles/FOS/UserBundle
+	url = git@github.com:kertz/UserBundle.git
