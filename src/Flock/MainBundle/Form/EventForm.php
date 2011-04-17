@@ -6,12 +6,28 @@
  
 namespace Flock\MainBundle\Form;
 
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\TextField;
-use Symfony\Component\Form\TextareaField;
-use Symfony\Component\Form\CheckboxField;
+use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\Type\AbstractType;
 
-class EventForm extends Form
+class EventForm extends AbstractType
 {
-    
+    public function buildForm(FormBuilder $builder, array $options)
+    {
+        $builder
+            ->add('event_name')
+            ->add('event_details')
+            ->end();
+    }
+
+    public function getDefaultOptions(array $options)
+    {
+        return array(
+            'data_class' => 'Flock\MainBundle\Entity\Event',
+        );
+    }
+
+    public function getName()
+    {
+        return 'eventform';
+    }
 }
