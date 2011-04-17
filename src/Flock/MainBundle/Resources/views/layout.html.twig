@@ -1,0 +1,13 @@
+{% extends "::base.html.twig" %}
+{% block stylesheets %}
+    <link href="{{ asset('bundles/flockmain/css/default.css') }}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block javascripts %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+    <script src="{{ asset('bundles/flockmain/js/jquery.formalize.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    {% block content %}{% endblock %}
+{% endblock %}
