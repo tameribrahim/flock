@@ -3,11 +3,11 @@
  * Created by amalraghav <amal.raghav@gmail.com>
  * Date: 17/04/11
  */
- 
+
 namespace Flock\MainBundle\Form;
 
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\Type\AbstractType;
+use Symfony\Component\Form\AbstractType;
 
 class EventForm extends AbstractType
 {
@@ -16,7 +16,9 @@ class EventForm extends AbstractType
         $builder
             ->add('event_name')
             ->add('event_details')
-            ->end();
+            ->add('event_start')
+            ->add('event_end')
+            ->add('website', 'url');
     }
 
     public function getDefaultOptions(array $options)
@@ -28,6 +30,6 @@ class EventForm extends AbstractType
 
     public function getName()
     {
-        return 'eventform';
+        return 'event_form';
     }
 }
