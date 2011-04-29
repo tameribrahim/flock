@@ -93,4 +93,4 @@ install_git WebConfiguratorBundle https://github.com/symfony/WebConfiguratorBund
 $DIR/bin/build_bootstrap.php
 
 # Update assets
-$DIR/app/console assets:install $DIR/web/
+$DIR/app/console assets:install --symlink $DIR/web/

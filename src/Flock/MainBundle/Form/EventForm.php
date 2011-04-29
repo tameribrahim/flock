@@ -14,11 +14,11 @@ class EventForm extends AbstractType
     public function buildForm(FormBuilder $builder, array $options)
     {
         $builder
-            ->add('event_name')
-            ->add('event_details')
-            ->add('event_start')
-            ->add('event_end')
-            ->add('website', 'url');
+            ->add('event_name', null, array('label' => 'What\'s the event?'))
+            ->add('event_details', null, array('label' => 'Share more details?'))
+            ->add('event_start', null, array('label' => 'Starting date and time', 'date_pattern' => "{{ month }}&nbsp;{{ day }}&nbsp;{{ year }}"))
+            ->add('event_end', null, array('label' => 'Ending date and time', 'date_pattern' => "{{ month }}&nbsp;{{ day }}&nbsp;{{ year }}"))
+            ->add('website', 'url', array('label' => 'Got a website?'));
     }
 
     public function getDefaultOptions(array $options)

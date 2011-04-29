@@ -22,7 +22,7 @@ class Event
 
     /**
      * @orm:Column(type="string", length="255")
-     * @assert:MaxLength(255)
+     * @assert:MaxLength(3)
      */
     protected $event_name;
 

@@ -63,19 +63,20 @@ body {
   border-radius: 5px 5px 5px 5px;
 }
 
-#content #new_event {
+#content #form_container {
     width: 500px;
     margin: 0 auto;
+    padding: 30px;
 }
 
-#event_form div {
-    border: 0 none;
-    font-size: 100%;
-    margin-top: 10px;
-    padding-right: 10px;
-}
+/*#event_form div {*/
+    /*border: 0 none;*/
+    /*font-size: 100%;*/
+    /*margin-top: 10px;*/
+    /*padding-right: 10px;*/
+/*}*/
 
-#event_form label {
+#form_container label {
     margin-top: 10px;
     padding-right: 10px;
 }
