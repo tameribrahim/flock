@@ -18,7 +18,6 @@ body {
 
 #wrapper {
   margin: 0 auto;
-  padding: 20px;
   width: 800px;
 }
 
@@ -34,10 +33,10 @@ body {
   -o-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 6px 0;
   box-shadow: rgba(0, 0, 0, 0.2) 0 2px 6px 0;
 
-  -moz-border-radius: 5px 5px 5px 5px;
-  -o-border-radius: 5px 5px 5px 5px;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px;
+  -moz-border-radius: 0 0 15px 15px;
+  -o-border-radius: 0 0 15px 15px;
+  -webkit-border-radius: 0 0 15px 15px;
+  border-radius: 0 0 15px 15px;
 }
 
 #header #logo {
@@ -57,28 +56,90 @@ body {
   -o-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 6px 0;
   box-shadow: rgba(0, 0, 0, 0.2) 0 2px 6px 0;
 
-  -moz-border-radius: 0 0 5px 5px;
-  -o-border-radius: 0 0 5px 5px;
-  -webkit-border-radius: 0 0 5px 5px;
-  border-radius: 5px 5px 5px 5px;
+  -moz-border-radius: 15px 15px 15px 15px;
+  -o-border-radius: 15px 15px 15px 15px;
+  -webkit-border-radius: 15px 15px 15px 15px;
+  border-radius: 15px 15px 15px 15px;
 }
 
 #content #form_container {
-    width: 500px;
+    width: 680px;
     margin: 0 auto;
     padding: 30px;
 }
 
-/*#event_form div {*/
-    /*border: 0 none;*/
-    /*font-size: 100%;*/
-    /*margin-top: 10px;*/
-    /*padding-right: 10px;*/
-/*}*/
+#form_container p {
+    color: #666666;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+div.ui-datepicker{
+ font-size:11px;
+}
+
+
+#form_container h1 {
+    border-bottom: 2px solid #222222;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+}
+
+#form_container #form_title {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+
+    -moz-border-radius: 0 0 5px 5px;
+    -o-border-radius: 0 0 5px 5px;
+    -webkit-border-radius: 0 0 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+}
+
+#form_container #block_title {
+    background: none repeat scroll 0 0 transparent;
+    border-bottom: 2px dashed #EEEEEE;
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding: 10px 10px 5px 0;
+}
+
+#form_container #form_submit {
+    background: none;
+    margin-top: 20px;
+}
+
+#form_container #block {
+    font-weight: bold;
+    overflow: hidden;
+    padding: 5px 0;
+    width: 100%;
+}
+
+#form_container #block #left {
+    float: left;
+    width: 50%;
+}
+
+#form_container #block #right {
+    float: right;
+    width: 45%;
+}
+
+#form_container #block #chars_left {
+    font-size: 13px;
+    color: #666666;
+}
 
 #form_container label {
-    margin-top: 10px;
-    padding-right: 10px;
+    /*margin-top: 10px;*/
+    /*padding-right: 10px;*/
+    display: inline-block;
 }
 
 /* `Errors

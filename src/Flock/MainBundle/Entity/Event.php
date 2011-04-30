@@ -22,13 +22,13 @@ class Event
 
     /**
      * @orm:Column(type="string", length="255")
-     * @assert:MaxLength(3)
+     * @assert:MaxLength(100)
      */
     protected $event_name;
 
     /**
      * @orm:Column(type="text", nullable="true")
-     * @assert:MaxLength(1000)
+     * @assert:MaxLength(500)
      */
     protected $event_details;
 
@@ -50,6 +50,36 @@ class Event
      * @assert:MaxLength(255)
      */
     protected $website;
+
+    /**
+     * @orm:Column(type="string")
+     * @assert:MaxLength(255)
+     */
+    protected $place;
+
+    /**
+     * @orm:Column(type="text", nullable="true")
+     * @assert:MaxLength(500)
+     */
+    protected $address;
+
+    /**
+     * @orm:Column(type="decimal", precision="9", scale="6")
+     * @assert:NotBlank
+     */
+    protected $lat;
+
+    /**
+     * @orm:Column(type="decimal", precision="9", scale="6")
+     * @assert:NotBlank
+     */
+    protected $lng;
+
+//    /**
+//     * @orm:Column(type="smallint")
+//     * @assert:NotBlank
+//     */
+//    protected $zoom;
 
     /**
      * @orm:Column(type="datetime")
@@ -228,5 +258,85 @@ class Event
     public function getUpdatedAt()
     {
         return $this->updated_at;
+    }
+
+    /**
+     * Set address
+     *
+     * @param text $address
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+    }
+
+    /**
+     * Get address
+     *
+     * @return text $address
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * Set place
+     *
+     * @param string $place
+     */
+    public function setPlace($place)
+    {
+        $this->place = $place;
+    }
+
+    /**
+     * Get place
+     *
+     * @return string $place
+     */
+    public function getPlace()
+    {
+        return $this->place;
+    }
+
+    /**
+     * Set lat
+     *
+     * @param decimal $lat
+     */
+    public function setLat($lat)
+    {
+        $this->lat = $lat;
+    }
+
+    /**
+     * Get lat
+     *
+     * @return decimal $lat
+     */
+    public function getLat()
+    {
+        return $this->lat;
+    }
+
+    /**
+     * Set lng
+     *
+     * @param decimal $lng
+     */
+    public function setLng($lng)
+    {
+        $this->lng = $lng;
+    }
+
+    /**
+     * Get lng
+     *
+     * @return decimal $lng
+     */
+    public function getLng()
+    {
+        return $this->lng;
     }
 }

@@ -2,6 +2,7 @@
 {% block stylesheets %}
     <link href="{{ asset('bundles/flockmain/css/default.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('bundles/flockmain/css/formalize.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('bundles/flockmain/css/smoothness/jquery-ui-1.8.7.custom.css') }}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block body %}
@@ -17,5 +18,12 @@
 
 {% block javascripts %}
     <script src="{{ asset('bundles/flockmain/js/jquery-1.5.2.min.js') }}"></script>
-    <script src="{{ asset('bundles/flockmain/js/jquery.formalize.js') }}"></script>
+    <!-- <script src="{{ asset('bundles/flockmain/js/jquery.formalize.js') }}"></script> -->
+    <script src="{{ asset('bundles/flockmain/js/jquery.elastic.js') }}"></script>
+    <script src="{{ asset('bundles/flockmain/js/jquery.limit-1.2.source.js') }}"></script>
+    <script src="{{ asset('bundles/flockmain/js/jquery-ui-1.8.7.custom.min.js') }}"></script>
+    <script type="text/javascript" src="http://code.google.com/apis/gears/gears_init.js"></script>
+    {% block inner_javascripts %}{% endblock %}
 {% endblock %}
+
+
