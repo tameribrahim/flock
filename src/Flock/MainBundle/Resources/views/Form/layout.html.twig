@@ -2,7 +2,7 @@
 {% spaceless %}
     {% if errors|length > 0 %}
         {% for error in errors %}
-            {{ error.messageTemplate|trans(error.messageParameters, 'validators') }}
+            <div id="message">{{ error.messageTemplate|trans(error.messageParameters, 'validators') }}</div>
         {% endfor %}
     {% endif %}
 {% endspaceless %}
@@ -10,7 +10,7 @@
 
 {% block field_label %}
 {% spaceless %}
-    <label for="{{ id }}" class="{{ errors|length > 0 ? 'error' : '' }}">{{ label|trans }}</label>
+    <label for="{{ id }}">{{ label|trans }}</label>
     <br>
 {% endspaceless %}
 {% endblock field_label %}
@@ -24,8 +24,6 @@
 
 {% block datetime_widget %}
 {% spaceless %}
-        {{ form_errors(form.date) }}
-        {{ form_errors(form.time) }}
         {{ form_widget(form.date) }}
         {{ form_widget(form.time) }}
 {% endspaceless %}

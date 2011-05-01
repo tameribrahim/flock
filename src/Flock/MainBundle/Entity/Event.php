@@ -65,21 +65,18 @@ class Event
 
     /**
      * @orm:Column(type="decimal", precision="9", scale="6")
-     * @assert:NotBlank
      */
     protected $lat;
 
     /**
      * @orm:Column(type="decimal", precision="9", scale="6")
-     * @assert:NotBlank
      */
     protected $lng;
 
-//    /**
-//     * @orm:Column(type="smallint")
-//     * @assert:NotBlank
-//     */
-//    protected $zoom;
+    /**
+     * @orm:Column(type="smallint")
+     */
+    protected $zoom;
 
     /**
      * @orm:Column(type="datetime")
@@ -92,6 +89,11 @@ class Event
      *
      */
     protected $updated_at;
+
+    public function __construct() {
+        $this->setEventStart(new \DateTime('now'));
+        $this->setEventEnd(new \DateTime('+1 day'));
+    }
 
     /**
      * @orm:prePersist
@@ -108,6 +110,35 @@ class Event
     public function onPreUpdate()
     {
         $this->setUpdatedAt(new \DateTime("now"));
+    }
+
+    /**
+     * @assert:True(message = "The date range is not valid!")
+     */
+    public function isDateInRange()
+    {
+        if ($this->getEventStart()->getTimestamp() > $this->getEventEnd()->getTimestamp()) {
+
+            return false;
+        }
+
+        if ($this->getEventStart()->getTimestamp() > strtotime('+1 year') || $this->getEventEnd()->getTimestamp() > strtotime('+1 year')) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @assert:True(message = "The map location is not valid!")
+     */
+    public function isValidMapData()
+    {
+        if (!$this->lat || !$this->lng || !$this->zoom) {
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -338,5 +369,25 @@ class Event
     public function getLng()
     {
         return $this->lng;
+    }
+
+    /**
+     * Set zoom
+     *
+     * @param smallint $zoom
+     */
+    public function setZoom($zoom)
+    {
+        $this->zoom = $zoom;
+    }
+
+    /**
+     * Get zoom
+     *
+     * @return smallint $zoom
+     */
+    public function getZoom()
+    {
+        return $this->zoom;
     }
 }

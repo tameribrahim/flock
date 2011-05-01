@@ -71,14 +71,13 @@ body {
 #form_container p {
     color: #666666;
     margin-bottom: 5px;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 div.ui-datepicker{
  font-size:11px;
 }
-
 
 #form_container h1 {
     border-bottom: 2px solid #222222;
@@ -114,6 +113,16 @@ div.ui-datepicker{
     margin-top: 20px;
 }
 
+#form_container #form_errors {
+}
+
+#form_container #form_errors #message {
+    background: none repeat scroll 0 0 #FFFFCC;
+    color: #CC0000;
+    padding: 10px;
+    font-weight: bold;
+}
+
 #form_container #block {
     font-weight: bold;
     overflow: hidden;
@@ -123,12 +132,21 @@ div.ui-datepicker{
 
 #form_container #block #left {
     float: left;
-    width: 50%;
+    width: 48%;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 #form_container #block #right {
     float: right;
-    width: 45%;
+    width: 48%;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#form_container #error_message {
+    background: none repeat scroll 0 0 #FFFFCC;
+    color: #CC0000;
 }
 
 #form_container #block #chars_left {
