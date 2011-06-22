@@ -6,86 +6,89 @@
 
 namespace Flock\MainBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
- * @orm:Entity
- * @orm:Table(name="events")
- * @orm:HasLifecycleCallbacks
+ * @ORM\Entity(repositoryClass="Flock\MainBundle\Entity\EventRepository")
+ * @ORM\Table(name="events")
+ * @ORM\HasLifecycleCallbacks
  */
 class Event
 {
     /**
-     * @orm:Id
-     * @orm:Column(type="integer")
-     * @orm:GeneratedValue(strategy="AUTO")
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
-     * @orm:Column(type="string", length="255")
-     * @assert:MaxLength(100)
+     * @ORM\Column(type="string", length="255")
+     * @Assert\MaxLength(100)
      */
     protected $event_name;
 
     /**
-     * @orm:Column(type="text", nullable="true")
-     * @assert:MaxLength(500)
+     * @ORM\Column(type="text", nullable="true")
+     * @Assert\MaxLength(500)
      */
     protected $event_details;
 
     /**
-     * @orm:Column(type="datetime")
-     * @assert:NotBlank
+     * @ORM\Column(type="datetime")
+     * @Assert\NotBlank
      */
     protected $event_start;
 
     /**
-     * @orm:Column(type="datetime")
-     * @assert:NotBlank
+     * @ORM\Column(type="datetime")
+     * @Assert\NotBlank
      */
     protected $event_end;
 
     /**
-     * @orm:Column(type="string", length="255", nullable="true")
-     * @assert:Url
-     * @assert:MaxLength(255)
+     * @ORM\Column(type="string", length="255", nullable="true")
+     * @Assert\Url
+     * @Assert\MaxLength(255)
      */
     protected $website;
 
     /**
-     * @orm:Column(type="string")
-     * @assert:MaxLength(255)
+     * @ORM\Column(type="string")
+     * @Assert\MaxLength(255)
      */
     protected $place;
 
     /**
-     * @orm:Column(type="text", nullable="true")
-     * @assert:MaxLength(500)
+     * @ORM\Column(type="text", nullable="true")
+     * @Assert\MaxLength(500)
      */
     protected $address;
 
     /**
-     * @orm:Column(type="decimal", precision="9", scale="6")
+     * @ORM\Column(type="decimal", precision="9", scale="6")
      */
     protected $lat;
 
     /**
-     * @orm:Column(type="decimal", precision="9", scale="6")
+     * @ORM\Column(type="decimal", precision="9", scale="6")
      */
     protected $lng;
 
     /**
-     * @orm:Column(type="smallint")
+     * @ORM\Column(type="smallint")
      */
     protected $zoom;
 
     /**
-     * @orm:Column(type="datetime")
+     * @ORM\Column(type="datetime")
      *
      */
     protected $created_at;
 
     /**
-     * @orm:Column(type="datetime")
+     * @ORM\Column(type="datetime")
      *
      */
     protected $updated_at;
@@ -96,7 +99,7 @@ class Event
     }
 
     /**
-     * @orm:prePersist
+     * @ORM\prePersist
      */
     public function onPrePersist()
     {
@@ -105,7 +108,7 @@ class Event
     }
 
     /**
-     * @orm:preUpdate
+     * @ORM\preUpdate
      */
     public function onPreUpdate()
     {
@@ -113,7 +116,7 @@ class Event
     }
 
     /**
-     * @assert:True(message = "The date range is not valid!")
+     * @Assert\True(message = "The date range is not valid!")
      */
     public function isDateInRange()
     {
@@ -129,7 +132,7 @@ class Event
     }
 
     /**
-     * @assert:True(message = "The map location is not valid!")
+     * @Assert\True(message = "The map location is not valid!")
      */
     public function isValidMapData()
     {

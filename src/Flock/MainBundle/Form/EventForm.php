@@ -18,13 +18,13 @@ class EventForm extends AbstractType
             ->add('event_name', null, array('label' => 'In one line'))
             ->add('event_details', null, array('label' => 'Detailed'))
             ->add('event_start', null, array(
-              'label' => 'From',
-              'date_widget' => 'text',
-              'date_format' => IntlDateFormatter::FULL,
+                'label' => 'From',
+                'date_widget' => 'single-text',
+                'date_format' => IntlDateFormatter::FULL,
              ))
             ->add('event_end', null, array(
               'label' => 'To',
-              'date_widget' => 'text',
+              'date_widget' => 'single-text',
               'date_format' => IntlDateFormatter::FULL,
              ))
             ->add('website', null, array('label' => 'Got a website?'))

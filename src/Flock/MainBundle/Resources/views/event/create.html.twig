@@ -1,0 +1,182 @@
+{% extends "FlockMainBundle::layout.html.twig" %}
+{% block content %}
+    <div id="content">
+        <div id="container">
+            <h1>Creating a new flock</h1>
+            {% form_theme form 'FlockMainBundle:Form:layout.html.twig' %}
+            <form action="{{ path('flock_create') }}" {{ form_enctype(form) }} method="post">
+                <div id="form_errors">
+                {{ form_errors(form) }}
+                </div>
+                <div id="block_title">What's the plan?</div>
+                <div id="block">
+                    <p>
+                        {{ form_label(form.event_name) }}
+                        {{ form_widget(form.event_name, { 'attr': {'class': 'input_full', 'placeholder' : 'One line description, eg. Coffee in the evening?' } }) }}
+                        <div id="error_message">{{ form_errors(form.event_name) }}</div>
+                    </p>
+                    <p>
+                        {{ form_label(form.event_details) }}
+                        {{ form_widget(form.event_details, { 'attr': {'class': 'input_full', 'placeholder' : 'A little more info about the event' } }) }}
+                        <div id="error_message">{{ form_errors(form.event_details) }}</div>
+                        <p><span id="chars_left">You have <span id="event_details_chars_left"></span> chars left.</span></p>
+                    </p>
+                </div>
+
+                <div id="block_title">When is it?</div>
+                <div id="block">
+                    <p>
+                        <div id="left">
+                            {{ form_label(form.event_start) }}
+                            {{ form_widget(form.event_start, { 'attr': {'class': 'input_full' } }) }}
+                            <div id="error_message">{{ form_errors(form.event_start.date) }}</div>
+                            <div id="error_message">{{  form_errors(form.event_start.time) }}</div>
+                        </div>
+                        <div id="right">
+                            {{ form_label(form.event_end) }}
+                            {{ form_widget(form.event_end, { 'attr': {'class': 'input_full'} }) }}
+                            <div id="error_message">{{ form_errors(form.event_end.date) }}</div>
+                            <div id="error_message">{{ form_errors(form.event_end.time) }}</div>
+                        </div>
+                    </p>
+                </div>
+
+                <div id="block_title">Where is it?</div>
+                <div id="block">
+                    <div id="left">
+                        <div id="map_canvas" style="width:100%; height:300px;"></div>
+                    </div>
+                    <div id="right">
+                        <p>
+                            {{ form_label(form.place) }}
+                            {{ form_widget(form.place, { 'attr': {'class': 'input_full', 'placeholder' : 'Where will it be held? eg. "Starbucks Coffee"' } }) }}
+                            <div id="error_message">{{ form_errors(form.place) }}</div>
+                        </p>
+                        <p>
+                            {{ form_label(form.address) }}
+                            {{ form_widget(form.address, { 'attr': {'class': 'input_full', 'placeholder' : 'Street address of the place' } }) }}
+                            <div id="error_message">{{ form_errors(form.address) }}</div>
+                            <span id="chars_left">You have <span id="address_chars_left" class="chars_left"></span> chars left.</span>
+                        </p>
+                        <p>
+                            {{ form_label(form.website) }}
+                            {{ form_widget(form.website, { 'attr': {'class': 'input_full', 'placeholder' : 'http://example.com' } }) }}
+                            <div id="error_message">{{ form_errors(form.website) }}</div>
+                        </p>
+                    </div>
+                </div>
+                {{ form_rest(form) }}
+                <div id="form_submit"><input type="submit" value="Create Event"/></div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block inner_javascripts %}
+<script type="text/javascript">
+
+    // Google Maps
+    var map; var marker;
+    var browserSupportFlag =  new Boolean();
+    function initialize() {
+        var myLatlng = new google.maps.LatLng(35.685708, 139.702148);
+        var myOptions = {
+            zoom: 14,
+            center: myLatlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+        marker = new google.maps.Marker({
+            map: map,
+            draggable: true,
+            animation: google.maps.Animation.DROP,
+            position: map.getCenter(),
+        });
+        updateLatLngZoom();
+
+        google.maps.event.addListener(marker, 'dragend', setPosition);
+        google.maps.event.addListener(map, 'click', moveMarker);
+
+        marker.setAnimation(google.maps.Animation.DROP);
+
+        if(navigator.geolocation) {
+            browserSupportFlag = true;
+            navigator.geolocation.getCurrentPosition(function(position) {
+                initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+                map.setCenter(initialLocation);
+                marker.setPosition(map.getCenter());
+                updateLatLngZoom();
+            }, function() {
+                handleNoGeolocation(browserSupportFlag);
+            });
+        } else if (google.gears) {
+                // Try Google Gears Geolocation
+                browserSupportFlag = true;
+                var geo = google.gears.factory.create('beta.geolocation');
+                geo.getCurrentPosition(function(position) {
+                initialLocation = new google.maps.LatLng(position.latitude,position.longitude);
+                contentString = "Location found using Google Gears";
+                map.setCenter(initialLocation);
+                marker.setPosition(map.getCenter());
+                updateLatLngZoom();
+            }, function() {
+              handleNoGeolocation(browserSupportFlag);
+            });
+        } else {
+            // Browser doesn't support Geolocation
+            browserSupportFlag = false;
+            handleNoGeolocation(browserSupportFlag);
+        }
+    }
+
+    function handleNoGeolocation(errorFlag) {
+        if (errorFlag == true) {
+          alert("Geolocation service failed.");
+          initialLocation = new google.maps.LatLng(35.685708, 139.702148);
+        } else {
+          alert("Your browser doesn't support geolocation. We've placed you in Siberia.");
+          initialLocation = new google.maps.LatLng(35.685708, 139.702148);
+        }
+        map.setCenter(initialLocation);
+    }
+
+    function updateLatLngZoom(){
+        //set the lat lng and zoom property
+        $('#event_form_lat').val(marker.getPosition().lat());
+        $('#event_form_lng').val(marker.getPosition().lng());
+        $('#event_form_zoom').val(map.getZoom());
+    }
+
+    function setPosition() {
+        map.setCenter(marker.getPosition());
+        marker.setPosition(map.getCenter());
+        updateLatLngZoom();
+    }
+
+    function moveMarker(){
+        marker.setAnimation(google.maps.Animation.DROP);
+        marker.setPosition(map.getCenter());
+    }
+
+
+    function loadScript() {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "http://maps.google.com/maps/api/js?sensor=true&callback=initialize&language=en";
+        document.body.appendChild(script);
+    }
+
+    $(document).ready(function() {
+        //load GMAp
+        loadScript();
+        $('#event_form_event_details').elastic();
+        $('#event_form_event_details').limit('500','#event_details_chars_left');
+        $('#event_form_event_details').limit('500','#address_chars_left');
+
+        $("#event_form_event_start_date").datepicker({ minDate: 0, maxDate: "+12M" , dateFormat: "DD, MM d, yy", autoSize: true });
+        $("#event_form_event_end_date").datepicker({ minDate: 0, maxDate: "+12M", dateFormat: "DD, MM d, yy", autoSize: true });
+    });
+</script>
+{% endblock %}

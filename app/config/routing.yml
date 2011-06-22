@@ -2,6 +2,17 @@ _home:
     pattern:  /
     defaults: { _controller: FlockMainBundle:Default:index }
 
+_security_check:
+    pattern: /login_check
+
 _flock_default:
     resource: "@FlockMainBundle/Controller/DefaultController.php"
+    type:     annotation
+
+_flock_event:
+    resource: "@FlockMainBundle/Controller/EventController.php"
+    type:     annotation
+
+_flock_secured:
+    resource: "@FlockMainBundle/Controller/SecuredController.php"
     type:     annotation

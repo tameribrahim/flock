@@ -62,13 +62,13 @@ body {
   border-radius: 15px 15px 15px 15px;
 }
 
-#content #form_container {
+#content #container {
     width: 680px;
     margin: 0 auto;
     padding: 30px;
 }
 
-#form_container p {
+#container p {
     color: #666666;
     margin-bottom: 5px;
     margin-left: 5px;
@@ -79,13 +79,13 @@ div.ui-datepicker{
  font-size:11px;
 }
 
-#form_container h1 {
+#container h1 {
     border-bottom: 2px solid #222222;
     margin-bottom: 15px;
     padding-bottom: 10px;
 }
 
-#form_container #form_title {
+#container #form_title {
     display: block;
     font-size: 18px;
     font-weight: bold;
@@ -97,7 +97,7 @@ div.ui-datepicker{
     border-radius: 5px 5px 5px 5px;
 }
 
-#form_container #block_title {
+#container #block_title {
     background: none repeat scroll 0 0 transparent;
     border-bottom: 2px dashed #EEEEEE;
     display: block;
@@ -108,56 +108,73 @@ div.ui-datepicker{
     padding: 10px 10px 5px 0;
 }
 
-#form_container #form_submit {
+#container #form_submit {
     background: none;
     margin-top: 20px;
 }
 
-#form_container #form_errors {
+#container #form_errors {
 }
 
-#form_container #form_errors #message {
+#container #form_errors #message {
     background: none repeat scroll 0 0 #FFFFCC;
     color: #CC0000;
     padding: 10px;
     font-weight: bold;
 }
 
-#form_container #block {
+#container #block {
     font-weight: bold;
     overflow: hidden;
     padding: 5px 0;
     width: 100%;
 }
 
-#form_container #block #left {
+#container #block #left {
     float: left;
     width: 48%;
     margin-left: 5px;
     margin-right: 5px;
 }
 
-#form_container #block #right {
+#container #block #right {
     float: right;
     width: 48%;
     margin-left: 5px;
     margin-right: 5px;
 }
 
-#form_container #error_message {
+#container #error_message {
     background: none repeat scroll 0 0 #FFFFCC;
     color: #CC0000;
 }
 
-#form_container #block #chars_left {
+#container #block #chars_left {
     font-size: 13px;
     color: #666666;
 }
 
-#form_container label {
+#container label {
     /*margin-top: 10px;*/
     /*padding-right: 10px;*/
     display: inline-block;
+}
+
+
+/* `Event Display
+----------------------------------------------------------------------------------------------------*/
+#container #event_name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#container #event_date {
+    font-size: 13px;
+}
+
+#container #location {
+    font-size: 13px;
 }
 
 /* `Errors
