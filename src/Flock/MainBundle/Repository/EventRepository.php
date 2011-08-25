@@ -1,6 +1,6 @@
 <?php
 
-namespace Flock\MainBundle\Entity;
+namespace Flock\MainBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="Flock\MainBundle\Entity\EventRepository")
+ * @ORM\Entity(repositoryClass="Flock\MainBundle\Repository\EventRepository")
  * @ORM\Table(name="events")
  * @ORM\HasLifecycleCallbacks
  */
@@ -27,25 +27,25 @@ class Event
      * @ORM\Column(type="string", length="255")
      * @Assert\MaxLength(100)
      */
-    protected $event_name;
+    protected $name;
 
     /**
      * @ORM\Column(type="text", nullable="true")
      * @Assert\MaxLength(500)
      */
-    protected $event_details;
+    protected $details;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank
      */
-    protected $event_start;
+    protected $starts_at;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank
      */
-    protected $event_end;
+    protected $ends_at;
 
     /**
      * @ORM\Column(type="string", length="255", nullable="true")
@@ -94,8 +94,9 @@ class Event
     protected $updated_at;
 
     public function __construct() {
-        $this->setEventStart(new \DateTime('now'));
-        $this->setEventEnd(new \DateTime('+1 day'));
+        //TODO: set the time part to the next hour or half an hour mark
+        $this->setStartsAt(new \DateTime('now'));
+        $this->setEndsAt(new \DateTime('+1 day'));
     }
 
     /**
@@ -120,12 +121,12 @@ class Event
      */
     public function isDateInRange()
     {
-        if ($this->getEventStart()->getTimestamp() > $this->getEventEnd()->getTimestamp()) {
+        if ($this->getStartsAt()->getTimestamp() > $this->getEndsAt()->getTimestamp()) {
 
             return false;
         }
 
-        if ($this->getEventStart()->getTimestamp() > strtotime('+1 year') || $this->getEventEnd()->getTimestamp() > strtotime('+1 year')) {
+        if ($this->getStartsAt()->getTimestamp() > strtotime('+1 year') || $this->getEndsAt()->getTimestamp() > strtotime('+1 year')) {
             return false;
         }
         return true;
@@ -155,83 +156,83 @@ class Event
     }
 
     /**
-     * Set event_name
+     * Set name
      *
-     * @param string $eventName
+     * @param string $name
      */
-    public function setEventName($eventName)
+    public function setName($name)
     {
-        $this->event_name = $eventName;
+        $this->name = $name;
     }
 
     /**
-     * Get event_name
+     * Get name
      *
-     * @return string $eventName
+     * @return string
      */
-    public function getEventName()
+    public function getName()
     {
-        return $this->event_name;
+        return $this->name;
     }
 
     /**
-     * Set event_details
+     * Set details
      *
-     * @param text $eventDetails
+     * @param text $details
      */
-    public function setEventDetails($eventDetails)
+    public function setDetails($details)
     {
-        $this->event_details = $eventDetails;
+        $this->details = $details;
     }
 
     /**
-     * Get event_details
+     * Get details
      *
-     * @return text $eventDetails
+     * @return text
      */
-    public function getEventDetails()
+    public function getDetails()
     {
-        return $this->event_details;
+        return $this->details;
     }
 
     /**
-     * Set event_start
+     * Set starts_at
      *
-     * @param datetime $eventStart
+     * @param datetime $startsAt
      */
-    public function setEventStart($eventStart)
+    public function setStartsAt($startsAt)
     {
-        $this->event_start = $eventStart;
+        $this->starts_at = $startsAt;
     }
 
     /**
-     * Get event_start
+     * Get starts_at
      *
-     * @return datetime $eventStart
+     * @return datetime
      */
-    public function getEventStart()
+    public function getStartsAt()
     {
-        return $this->event_start;
+        return $this->starts_at;
     }
 
     /**
-     * Set event_end
+     * Set ends_at
      *
-     * @param datetime $eventEnd
+     * @param datetime $endsAt
      */
-    public function setEventEnd($eventEnd)
+    public function setEndsAt($endsAt)
     {
-        $this->event_end = $eventEnd;
+        $this->ends_at = $endsAt;
     }
 
     /**
-     * Get event_end
+     * Get ends_at
      *
-     * @return datetime $eventEnd
+     * @return datetime
      */
-    public function getEventEnd()
+    public function getEndsAt()
     {
-        return $this->event_end;
+        return $this->ends_at;
     }
 
     /**
@@ -247,71 +248,11 @@ class Event
     /**
      * Get website
      *
-     * @return string $website
+     * @return string
      */
     public function getWebsite()
     {
         return $this->website;
-    }
-
-    /**
-     * Set created_at
-     *
-     * @param datetime $createdAt
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->created_at = $createdAt;
-    }
-
-    /**
-     * Get created_at
-     *
-     * @return datetime $createdAt
-     */
-    public function getCreatedAt()
-    {
-        return $this->created_at;
-    }
-
-    /**
-     * Set updated_at
-     *
-     * @param datetime $updatedAt
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updated_at = $updatedAt;
-    }
-
-    /**
-     * Get updated_at
-     *
-     * @return datetime $updatedAt
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updated_at;
-    }
-
-    /**
-     * Set address
-     *
-     * @param text $address
-     */
-    public function setAddress($address)
-    {
-        $this->address = $address;
-    }
-
-    /**
-     * Get address
-     *
-     * @return text $address
-     */
-    public function getAddress()
-    {
-        return $this->address;
     }
 
     /**
@@ -327,11 +268,31 @@ class Event
     /**
      * Get place
      *
-     * @return string $place
+     * @return string
      */
     public function getPlace()
     {
         return $this->place;
+    }
+
+    /**
+     * Set address
+     *
+     * @param text $address
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+    }
+
+    /**
+     * Get address
+     *
+     * @return text
+     */
+    public function getAddress()
+    {
+        return $this->address;
     }
 
     /**
@@ -347,7 +308,7 @@ class Event
     /**
      * Get lat
      *
-     * @return decimal $lat
+     * @return decimal
      */
     public function getLat()
     {
@@ -367,7 +328,7 @@ class Event
     /**
      * Get lng
      *
-     * @return decimal $lng
+     * @return decimal
      */
     public function getLng()
     {
@@ -387,10 +348,50 @@ class Event
     /**
      * Get zoom
      *
-     * @return smallint $zoom
+     * @return smallint
      */
     public function getZoom()
     {
         return $this->zoom;
+    }
+
+    /**
+     * Set created_at
+     *
+     * @param datetime $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->created_at = $createdAt;
+    }
+
+    /**
+     * Get created_at
+     *
+     * @return datetime
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * Set updated_at
+     *
+     * @param datetime $updatedAt
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updated_at = $updatedAt;
+    }
+
+    /**
+     * Get updated_at
+     *
+     * @return datetime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updated_at;
     }
 }

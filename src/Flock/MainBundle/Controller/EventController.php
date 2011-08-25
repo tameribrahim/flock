@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 
-
 /**
  * @Extra\Route("/event")
  */
@@ -22,6 +21,8 @@ class EventController extends Controller
     /**
      * @Extra\Route("/create", name="flock_create")
      * @Extra\Template("FlockMainBundle:Event:create.html.twig")
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function createAction()
     {
@@ -47,13 +48,16 @@ class EventController extends Controller
      * @Extra\Route("/{id}", name="flock_event")
      * @Extra\ParamConverter("event", class="FlockMainBundle:Event")
      * @Extra\Template("FlockMainBundle:Event:show.html.twig")
+     *
+     * @param \Flock\MainBundle\Entity\Event $event
+     * @return array
      */
     public function showAction(Event $event)
     {
         return array('event' => $event);
     }
 
-    protected function buildForm(Event $event)
+    private function buildForm(Event $event)
     {
         $factory = $this->get('form.factory');
         $form = $factory->create(new EventForm());

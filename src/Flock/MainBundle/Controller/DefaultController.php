@@ -11,7 +11,8 @@ class DefaultController extends Controller
 {
     /**
      * @Extra\Route("/", name="flock_home")
-     */
+     * @return Flock\MainBundle\Controller\DefaultController
+    */
     public function indexAction()
     {
         return $this->render('FlockMainBundle:Default:index.html.twig', array());

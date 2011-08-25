@@ -6,13 +6,10 @@
 {% endblock %}
 
 {% block body %}
-    <div id="wrapper">
+    <div class="wrapper">
 
-        <div id="header">
-            <div id="logo"><img src="{{ asset('bundles/flockmain/images/flock.png') }}"/></div>
-            <span id="twitter_connect"></span>
-            {#{{ twitter_anywhere_setConfig('callbackURL', 'http://dev.flock.com/app_dev.php/secured') }}#}
-            {#{{ twitter_anywhere_queue('T("#twitter_connect").connectButton()') }}#}
+        <div class="header">
+            <div class="logo"><img src="{{ asset('bundles/flockmain/images/flock.png') }}"/></div>
         </div>
 
         {% block content %}{% endblock %}
@@ -27,10 +24,7 @@
     <script src="{{ asset('bundles/flockmain/js/jquery-ui-1.8.7.custom.min.js') }}"></script>
     <script type="text/javascript" src="http://code.google.com/apis/gears/gears_init.js"></script>
 
-    {{ twitter_anywhere_setup() }}
-
-    {% block inner_javascripts %}{% endblock %}
-
+    {% block extra_javascripts %}{% endblock %}
 {% endblock %}
 
 

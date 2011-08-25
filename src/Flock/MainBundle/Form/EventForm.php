@@ -15,17 +15,17 @@ class EventForm extends AbstractType
     public function buildForm(FormBuilder $builder, array $options)
     {
         $builder
-            ->add('event_name', null, array('label' => 'In one line'))
-            ->add('event_details', null, array('label' => 'Detailed'))
-            ->add('event_start', null, array(
+            ->add('name', null, array('label' => 'In one line'))
+            ->add('details', null, array('label' => 'Detailed'))
+            ->add('starts_at', null, array(
                 'label' => 'From',
-                'date_widget' => 'single-text',
                 'date_format' => IntlDateFormatter::FULL,
+                'years' => array(date('Y'), date('Y') + 1, date('Y') + 2, date('Y') + 3, date('Y') + 4, date('Y') + 5),
              ))
-            ->add('event_end', null, array(
+            ->add('ends_at', null, array(
               'label' => 'To',
-              'date_widget' => 'single-text',
               'date_format' => IntlDateFormatter::FULL,
+              'years' => array(date('Y'), date('Y') + 1, date('Y') + 2, date('Y') + 3, date('Y') + 4, date('Y') + 5),
              ))
             ->add('website', null, array('label' => 'Got a website?'))
             ->add('place', null, array('label' => 'Place'))
@@ -44,6 +44,6 @@ class EventForm extends AbstractType
 
     public function getName()
     {
-        return 'event_form';
+        return 'event';
     }
 }

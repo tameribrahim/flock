@@ -9,36 +9,5 @@
     <body>
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
-        <script type="text/javascript">
-            twttr.anywhere(function(T) {
-                // saves the auth status to the session
-                var saveAuth = function() {
-                    $.ajax('login_check', {
-                        dataType: "json",
-                        success: function(data) {
-                            alert("success");
-                           // do something
-                        },
-                        error: function() {
-                            alert("failed");
-                            twttr.anywhere.signOut();
-                        },
-                        cache: false
-                    });
-                };
-
-                if (!T.isConnected()) {
-                    T('#twitter_connect').connectButton();
-                } else {
-                    saveAuth();
-                }
-
-                T.bind("authComplete", function (e, user) {
-                    // ...
-
-                    saveAuth();
-                })
-            });
-        </script>
     </body>
 </html>

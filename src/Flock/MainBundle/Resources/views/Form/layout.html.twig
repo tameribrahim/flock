@@ -1,36 +1,19 @@
-{% block field_errors %}
+{% block date_widget %}
 {% spaceless %}
-    {% if errors|length > 0 %}
-        {% for error in errors %}
-            <div id="message">{{ error.messageTemplate|trans(error.messageParameters, 'validators') }}</div>
-        {% endfor %}
+    {% if widget == 'single_text' %}
+        {{ block('field_widget') }}
+    {% else %}
+            {{ form_widget(form.year) }}&nbsp;{{ form_widget(form.month) }}&nbsp;{{ form_widget(form.day) }}
     {% endif %}
 {% endspaceless %}
-{% endblock field_errors %}
-
-{% block field_label %}
-{% spaceless %}
-    <label for="{{ id }}">{{ label|trans }}</label>
-    <br>
-{% endspaceless %}
-{% endblock field_label %}
-
-{% block field_widget %}
-{% spaceless %}
-    {% set type = type|default('text') %}
-    <input type="{{ type }}" {{ block('attributes') }} value="{{ value }}"/>
-{% endspaceless %}
-{% endblock field_widget %}
-
-{% block datetime_widget %}
-{% spaceless %}
-        {{ form_widget(form.date) }}
-        {{ form_widget(form.time) }}
-{% endspaceless %}
-{% endblock datetime_widget %}
+{% endblock date_widget %}
 
 {% block time_widget %}
 {% spaceless %}
-        &nbsp;{{ form_widget(form.hour, { 'attr': { 'size': '1' } }) }}&nbsp;:&nbsp;{{ form_widget(form.minute, { 'attr': { 'size': '1' } }) }}{% if with_seconds %}:{{ form_widget(form.second, { 'attr': { 'size': '1' } }) }}{% endif %}
+    {% if widget == 'single_text' %}
+        {{ block('field_widget') }}
+    {% else %}
+            &nbsp;{{ form_widget(form.hour, { 'attr': { 'size': '1' } }) }}&nbsp;:&nbsp;{{ form_widget(form.minute, { 'attr': { 'size': '1' } }) }}{% if with_seconds %}:{{ form_widget(form.second, { 'attr': { 'size': '1' } }) }}{% endif %}
+    {% endif %}
 {% endspaceless %}
 {% endblock time_widget %}
