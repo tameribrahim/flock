@@ -118,6 +118,7 @@ class Event
 
     /**
      * @Assert\True(message = "The date range is not valid!")
+     * @return bool
      */
     public function isDateInRange()
     {
