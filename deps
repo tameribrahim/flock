@@ -66,5 +66,9 @@
     target=/bundles/FOS/TwitterBundle
 
 [AntiMattrGoogleBundle]
-    git=https://kertz@github.com/kertz/GoogleBundle.git
+    git=http://github.com/kertz/GoogleBundle.git
     target=/bundles/AntiMattr/GoogleBundle
+
+[FOSUserBundle]
+    git=http://github.com/FriendsOfSymfony/FOSUserBundle.git
+    target=bundles/FOS/UserBundle

@@ -20,14 +20,12 @@ security:
             fos_twitter:
                 login_path: /login
                 check_path: /login_check
-#                use_twitter_anywhere: true
-                always_use_default_target_path: true
-                default_target_path: /secured
             logout: ~
             anonymous: ~
 
     access_control:
-        - { path: /login , roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /event/create , roles: IS_AUTHENTICATED_FULLY }
+        - { path: /login , roles: IS_AUTHENTICATED_FULLY }
 
 #security:
 #    encoders:

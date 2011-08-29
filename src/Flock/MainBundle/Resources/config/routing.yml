@@ -1,3 +1,11 @@
-#homepage:
-#    pattern:  /
-#    defaults: { _controller: FlockMainBundle:Default:index }
+flock_default:
+    resource: "@FlockMainBundle/Controller/DefaultController.php"
+    type:     annotation
+
+flock_event:
+    resource: "@FlockMainBundle/Controller/EventController.php"
+    type:     annotation
+
+flock_secured:
+    resource: "@FlockMainBundle/Controller/SecuredController.php"
+    type:     annotation
