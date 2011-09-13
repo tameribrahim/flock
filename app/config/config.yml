@@ -58,6 +58,11 @@ jms_security_extra:
     secure_controllers:  true
     secure_all_services: false
 
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb'
+    firewall_name: main
+    user_class: Flock\MainBundle\Entity\User
+
 fos_twitter:
     file: %kernel.root_dir%/../vendor/twitteroauth/twitteroauth/twitteroauth.php
     consumer_key: anecYqd0HV7sxpA7LAHJA
