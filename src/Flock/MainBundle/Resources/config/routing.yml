@@ -9,6 +9,3 @@ flock_event:
 flock_secured:
     resource: "@FlockMainBundle/Controller/SecuredController.php"
     type:     annotation
-
-fos_user_security:
-    resource: "@FOSUserBundle/Resources/config/routing/security.xml"

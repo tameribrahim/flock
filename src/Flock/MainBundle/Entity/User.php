@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="users")
  */
-class User extends BaseUser
+class User extends BaseUser implements \Serializable
 {
     /**
      * @ORM\Id
@@ -30,19 +30,19 @@ class User extends BaseUser
     protected $name;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="twitter_id", type="integer")
      * @Assert\NotBlank(groups={"twitter"})
      */
     protected $twitterID;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="screen_name", type="string")
      * @Assert\NotBlank(groups={"twitter"})
      */
     protected $screenName;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="profile_image_url", type="string")
      * @Assert\NotBlank(groups={"twitter"})
      */
     protected $profileImageUrl;
@@ -55,10 +55,21 @@ class User extends BaseUser
 
     public function setTwitterData($twitterData)
     {
-        $this->screenName = $twitterData['screen_name'];
-        $this->twitterID = $twitterData['id'];
-        $this->name = $twitterData['name'];
-        $this->profileImageUrl = $twitterData['profile_image_url'];
+        if (isset($twitterData->id)) {
+            var_dump($twitterData->id);
+            $this->setTwitterID($twitterData->id);
+            $this->setEmail($twitterData->id.'@'.'twitter.com');
+            $this->addRole('ROLE_TWITTER');
+        }
+        if (isset($twitterData->screen_name)) {
+            $this->setScreenName($twitterData->screen_name);
+        }
+        if (isset($twitterData->name)) {
+            $this->setName($twitterData->name);
+        }
+        if (isset($twitterData->profile_image_url)) {
+            $this->setProfileImageUrl($twitterData->profile_image_url);
+        }
     }
 
     /**
@@ -139,15 +150,59 @@ class User extends BaseUser
     public function setTwitterID($twitterID)
     {
         $this->twitterID = $twitterID;
+        $this->setUsername($twitterID);
+        $this->salt = '';
     }
 
     /**
      * Get twitterID
      *
-     * @return integer 
+     * @return integer
      */
     public function getTwitterID()
     {
         return $this->twitterID;
+    }
+
+    /**
+     * Serializes the user.
+     *
+     * The serialized data have to contain the fields used by the equals method and the username.
+     *
+     * @return string
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->password,
+            $this->salt,
+            $this->usernameCanonical,
+            $this->username,
+            $this->expired,
+            $this->locked,
+            $this->credentialsExpired,
+            $this->enabled,
+            $this->twitterID
+        ));
+    }
+
+    /**
+     * Unserializes the user.
+     *
+     * @param string $serialized
+     */
+    public function unserialize($serialized)
+    {
+        list(
+            $this->password,
+            $this->salt,
+            $this->usernameCanonical,
+            $this->username,
+            $this->expired,
+            $this->locked,
+            $this->credentialsExpired,
+            $this->enabled,
+            $this->twitterID
+        ) = unserialize($serialized);
     }
 }
