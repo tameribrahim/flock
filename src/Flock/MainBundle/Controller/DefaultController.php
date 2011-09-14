@@ -24,6 +24,6 @@ class DefaultController extends Controller
      */
     public function loginAction()
     {
-        return new Response();
+        return $this->render('FlockMainBundle:Default:index.html.twig', array());
     }
 }

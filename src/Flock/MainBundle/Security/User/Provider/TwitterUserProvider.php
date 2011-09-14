@@ -11,16 +11,14 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use \TwitterOAuth;
-use FOS\UserBundle\Entity\UserManager;
-use Symfony\Component\Validator\Validator;
 
-class TwitterProvider implements UserProviderInterface
+class TwitterUserProvider implements UserProviderInterface
 {
     protected $twitter;
     protected $userManager;
     protected $validator;
 
-    public function __construct(TwitterOAuth $twitter, UserManager $userManager, Validator $validator)
+    public function __construct(TwitterOAuth $twitter, $userManager, $validator)
     {
         $this->twitter = $twitter;
         $this->userManager = $userManager;
@@ -56,6 +54,7 @@ class TwitterProvider implements UserProviderInterface
                 // TODO: the user was found obviously, but doesnt match our expectations, do something smart
                 throw new UsernameNotFoundException('The Twitter user could not be stored');
             }
+
             $this->userManager->updateUser($user);
         }
 

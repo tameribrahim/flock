@@ -22,6 +22,6 @@ class SecuredController extends Controller
      */
     public function indexAction()
     {
-        return new \Symfony\Component\HttpFoundation\Response();
+        return $this->render('FlockMainBundle:Default:index.html.twig', array());
     }
 }
