@@ -9,7 +9,7 @@ namespace Flock\MainBundle\Entity;
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity
  * @ORM\Table(name="users")
@@ -36,6 +36,18 @@ class User extends BaseUser implements \Serializable
     protected $twitterID;
 
     /**
+     * @ORM\Column(name="oauth_token", type="string")
+     * @Assert\NotBlank(groups={"twitter"})
+     */
+    protected $oauthToken;
+
+    /**
+     * @ORM\Column(name="oauth_secret", type="string")
+     * @Assert\NotBlank(groups={"twitter"})
+     */
+    protected $oauthSecret;
+
+    /**
      * @ORM\Column(name="screen_name", type="string")
      * @Assert\NotBlank(groups={"twitter"})
      */
@@ -47,13 +59,32 @@ class User extends BaseUser implements \Serializable
      */
     protected $profileImageUrl;
 
+    /**
+     * @ORM\Column(name="locale", type="string", length=5)
+     * @Assert\NotBlank(groups={"twitter"})
+     */
+    protected $locale;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Flock", mappedBy="user")
+     */
+    protected $flocksCreated;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Guest", mappedBy="user")
+     */
+    protected $flocksAttending;
+
     public function __construct()
     {
         parent::__construct();
-        // your own logic
+
+        $this->flocksCreated = new ArrayCollection();
+        $this->flocksAttending = new ArrayCollection();
+        $this->userCulture = 'en';
     }
 
-    public function setTwitterData($twitterData)
+    public function setTwitterData($twitterData, $oauth_token, $oauth_secret)
     {
         if (isset($twitterData->id)) {
             var_dump($twitterData->id);
@@ -70,6 +101,12 @@ class User extends BaseUser implements \Serializable
         if (isset($twitterData->profile_image_url)) {
             $this->setProfileImageUrl($twitterData->profile_image_url);
         }
+        if (isset($twitterData->lang)) {
+            $this->setLocale($twitterData->lang);
+        }
+        //set access token
+        $this->setOauthToken($oauth_token);
+        $this->setOauthSecret($oauth_secret);
     }
 
     /**
@@ -204,5 +241,105 @@ class User extends BaseUser implements \Serializable
             $this->enabled,
             $this->twitterID
         ) = unserialize($serialized);
+    }
+
+    /**
+     * Set oauthToken
+     *
+     * @param string $oauthToken
+     */
+    public function setOauthToken($oauthToken)
+    {
+        $this->oauthToken = $oauthToken;
+    }
+
+    /**
+     * Get oauthToken
+     *
+     * @return string
+     */
+    public function getOauthToken()
+    {
+        return $this->oauthToken;
+    }
+
+    /**
+     * Set oauthSecret
+     *
+     * @param string $oauthSecret
+     */
+    public function setOauthSecret($oauthSecret)
+    {
+        $this->oauthSecret = $oauthSecret;
+    }
+
+    /**
+     * Get oauthSecret
+     *
+     * @return string
+     */
+    public function getOauthSecret()
+    {
+        return $this->oauthSecret;
+    }
+
+    /**
+     * Add flocksCreated
+     *
+     * @param Flock\MainBundle\Entity\Flock $flocksCreated
+     */
+    public function addFlocksCreated(\Flock\MainBundle\Entity\Flock $flocksCreated)
+    {
+        $this->flocksCreated[] = $flocksCreated;
+    }
+
+    /**
+     * Get flocksCreated
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getFlocksCreated()
+    {
+        return $this->flocksCreated;
+    }
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * Get locale
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Add flocksAttending
+     *
+     * @param Flock\MainBundle\Entity\Guest $flocksAttending
+     */
+    public function addFlocksAttending(\Flock\MainBundle\Entity\Guest $flocksAttending)
+    {
+        $this->flocksAttending[] = $flocksAttending;
+    }
+
+    /**
+     * Get flocksAttending
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getFlocksAttending()
+    {
+        return $this->flocksAttending;
     }
 }

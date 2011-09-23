@@ -1,0 +1,181 @@
+{% extends "FlockMainBundle::layout.html.twig" %}
+
+{% form_theme form _self %}
+
+{% block field_errors %}
+{% spaceless %}
+    {% if errors|length > 0 %}
+    <div class="alert-message block-message error fade in" data-alert="alert">
+        <a class="close" href="#">×</a>
+        {% for error in errors %}
+            <p><strong>{{ error.messageTemplate|trans(error.messageParameters, 'validators') }}</strong></p>
+        {% endfor %}
+    </div>
+    {% endif %}
+{% endspaceless %}
+{% endblock field_errors %}
+
+{% block content %}
+    <div class="row">
+        <div class="span10">
+            <form class="form-stacked" action="{{ path('flock_create') }}" method="post" {{ form_enctype(form) }}>
+                <fieldset>
+                    <legend>Great to know you are planning something. Tell us more about it.</legend>
+                    {{ form_errors(form) }}
+                    <div class="clearfix">
+                        <label for="flock_name">What is it?</label>
+                        {{ form_errors(form.name) }}
+                        <div class="input">
+                            {{ form_widget(form.name, { 'attr': { 'class': 'span10', 'placeholder': 'What are you planning in one line, eg. Coffee in the evening!'} }) }}
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <label for="flock_datetime">When is it?</label>
+                        {{ form_errors(form.startsAt.date) }}
+                        {{ form_errors(form.startsAt.time) }}
+                        {{ form_errors(form.endsAt.date) }}
+                        {{ form_errors(form.endsAt.time) }}
+                        <div class="inline-inputs">
+                            {{ form_widget(form.startsAt.date, { 'attr': { 'class': 'span2'} }) }}
+                            {{ form_widget(form.startsAt.time, { 'attr': { 'class': 'mini' } }) }}
+                            {# If there is any value in the end dates when the form is reloaded display the block #}
+                            <span id="end_date" style="display: none;">
+                                to
+                                {{ form_widget(form.endsAt.date, { 'attr': { 'class': 'span2'} }) }}
+                                {{ form_widget(form.endsAt.time, { 'attr': { 'class': 'mini' } }) }}
+                            </span>
+                            <a href="#" class="btn small info" onclick="toggleEndDate()" id="end_date_trigger">Add end date</a>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="input">
+                            <label>Where is it?</label>
+                            {{ form_errors(form.place) }}
+                            {{ form_widget(form.place, { 'attr': { 'class': 'span10', 'placeholder': 'Where is it happening?, eg. Starbucks coffee!'} }) }}
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div id="map_canvas" style="width:580px; height:250px;"></div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="row">
+                            <div class="span5">
+                                <label for="flock_hashTag">Twitter Hashtag</label>
+                                {{ form_errors(form.hashTag) }}
+                                <div class="input">
+                                    <div class="input-prepend">
+                                        <span class="add-on">#</span>
+                                        {{ form_widget(form.hashTag, { 'attr': { 'class': 'span4', 'placeholder': 'coffee'} }) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="span5">
+                                <label for="flock_website">Website</label>
+                                {{ form_errors(form.hashTag) }}
+                                <div class="input">
+                                    {{ form_widget(form.website, { 'attr': { 'class': 'span5', 'placeholder': 'http://www.example.com'} }) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{ form_rest(form) }}
+                    <div class="actions">
+                        <input type="submit" class="btn primary" value="Create flock">&nbsp;<small>By creating the event you agree to the terms & conditions of Flock.io</small>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block inner_stylesheets %}
+    <link href="{{ asset('bundles/flockmain/css/smoothness/jquery-ui-1.8.7.custom.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('bundles/flockmain/css/jquery.ui.timepicker.css') }}" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        div.ui-datepicker {
+            font-size: 12px;
+        }
+    </style>
+{% endblock %}
+
+{% block inner_javascripts %}
+    <script src="{{ asset('bundles/flockmain/js/jquery-1.5.2.min.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/i18n/jquery-ui-i18n.min.js"></script>
+    <script src="{{ asset('bundles/flockmain/js/jquery.ui.timepicker.js') }}"></script>
+    <script src="{{ asset('bundles/flockmain/js/date.js') }}"></script>
+    <script src="{{ asset('bundles/flockmain/js/bootstrap-alerts.js') }}"></script>
+    <script src="{{ asset('bundles/flockmain/js/flock/map.js') }}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            loadMapScript('{{ app.session.locale }}');  //load GMAp
+
+            if('' != $("#flock_startsAt_date").val() && '' != $("#flock_startsAt_time").val()) {
+                //date manipulation
+                var startDate = $("#flock_startsAt_date").val();
+                var startTime = $("#flock_startsAt_time").val();
+                var startDateTime = Date.parse(startDate + " " + startTime);
+                if (startDateTime) {
+                    $("#flock_startsAt_date").val(startDateTime.toString("MM/dd/yyyy"));
+                    $("#flock_startsAt_time").val(startDateTime.toString("HH:mm"));
+                }
+            }
+
+            if('' != $("#flock_endsAt_date").val() && '' != $("#flock_endsAt_time").val()) {
+                //date manipulation
+                var endDate = $("#flock_endsAt_date").val();
+                var endTime = $("#flock_endsAt_time").val();
+                var endDateTime = Date.parse(endDate + " " + endTime);
+                if (endDateTime) {
+                    $("#flock_endsAt_date").val(endDateTime.toString("MM/dd/yyyy"));
+                    $("#flock_endsAt_time").val(endDateTime.toString("HH:mm"));
+                }
+
+                $("#end_date").css('display', 'inline'); //show end date time div
+                $("a#end_date_trigger").text('Remove end date');
+            }
+
+            $.datepicker.setDefaults( $.datepicker.regional[ "" ] );
+            $( "#flock_startsAt_date" ).datepicker($.datepicker.regional[ "{{ app.session.locale }}" ]);
+            $('#flock_startsAt_time').timepicker({
+                showPeriodLabels: false,
+                showLeadingZero: true,
+                hourText: 'Hour',
+                minuteText: 'Minute',
+                amPmText: ['AM', 'PM']
+            });
+            $( "#flock_endsAt_date" ).datepicker($.datepicker.regional[ "{{ app.session.locale }}" ]);
+            $('#flock_endsAt_time').timepicker({
+                showPeriodLabels: false,
+                showLeadingZero: true,
+                hourText: 'Hour',
+                minuteText: 'Minute',
+                amPmText: ['AM', 'PM']
+            });
+
+            $(".alert-message").alert()
+        });
+
+        function toggleEndDate()
+        {
+            if ('none' == $("#end_date").css('display')) {
+                var startDate = $("#flock_startsAt_date").val();
+                var startTime = $("#flock_startsAt_time").val();
+                console.log(startDate + " " + startTime);
+                var endDate = Date.parse(startDate + " " + startTime).add(1).hours();
+                if (endDate) {
+                    $("#flock_endsAt_date").val(endDate.toString("MM/dd/yyyy"));
+                    $("#flock_endsAt_time").val(endDate.toString("HH:mm"));
+                }
+                $("#end_date").css('display', 'inline'); //show end date time div
+                $("a#end_date_trigger").text('Remove end date');
+            } else {
+                $("#flock_endsAt_date").val("");
+                $("#flock_endsAt_time").val("");
+                $("#end_date").css('display', 'none'); //hide end date time div
+                $("a#end_date_trigger").text('Add end date');
+            }
+        }
+    </script>
+{% endblock %}

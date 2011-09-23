@@ -17,13 +17,4 @@ class DefaultController extends Controller
     {
         return $this->render('FlockMainBundle:Default:index.html.twig', array());
     }
-
-    /**
-     * @Extra\Route("/login", name="flock_login")
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function loginAction()
-    {
-        return $this->render('FlockMainBundle:Default:index.html.twig', array());
-    }
 }

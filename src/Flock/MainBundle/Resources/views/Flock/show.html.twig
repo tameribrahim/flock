@@ -1,0 +1,60 @@
+{% extends "FlockMainBundle::layout.html.twig" %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ flock.name }}&nbsp;<small><a href="#">http://www.symfony.com</a></small></h1>
+        <div class="join"><button class="btn success"><strong>Join this flock!</strong></button></div>
+    </div>
+    <div class="row">
+        <div class="span14">
+            <div class="title">Details</div>
+            <div class="info"><span class="highlight">{{ flock.startsAt }}</span>
+            {% if flock.startsAt|length %}
+                &nbsp;to&nbsp;<span class="highlight">{{ flock.startsAt }}</span>
+            {% endif %}
+            &nbsp;at&nbsp;<span class="highlight">{{ flock.place }}</span></div>
+            <div class="info"><a href="#">+ View location on map</a></div>
+            <div class="title">Who are attending?</div>
+            <div class="info">{{ flock.getAttendants }}</div>
+            <div class="info"><a href="#">+ View all attendants</a></div>
+            <div class="title">Twitter conversation</div>
+                <div class="info">Join the conversation with <span class="highlight">#Symfony2</span></div>
+                {% block inner_javascript%}
+                    <script src="http://widgets.twimg.com/j/2/widget.js"></script>
+                {% endblock %}
+                <script>
+                new TWTR.Widget({
+                  version: 2,
+                  type: 'search',
+                  search: '#haiku',
+                  interval: 30000,
+                  title: '',
+                  subject: '#Symfony2',
+                  width: 'auto',
+                  height: 300,
+                  theme: {
+                    shell: {
+                      background: '#8ec1da',
+                      color: '#ffffff'
+                    },
+                    tweets: {
+                      background: '#ffffff',
+                      color: '#444444',
+                      links: '#1985b5'
+                    }
+                  },
+                  features: {
+                    scrollbar: true,
+                    loop: true,
+                    live: true,
+                    hashtags: true,
+                    timestamp: true,
+                    avatars: true,
+                    toptweets: true,
+                    behavior: 'all'
+                  }
+                }).render().start();
+                </script>
+        </div>
+    </div>
+{% endblock %}
