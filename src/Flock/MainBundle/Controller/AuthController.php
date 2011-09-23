@@ -12,12 +12,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 
 /**
- * @Extra\Route("/secured")
+ * @Extra\Route("/auth")
  */
-class SecuredController extends Controller
+class AuthController extends Controller
 {
     /**
-     * @Extra\Route("/", name="_secured_home")
+     * @Extra\Route("/login", name="_secured_home")
      * @return \Symfony\Bundle\FrameworkBundle\Controller\Response
      */
     public function indexAction()
