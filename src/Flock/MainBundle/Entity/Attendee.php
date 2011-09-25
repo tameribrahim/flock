@@ -10,11 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="Flock\MainBundle\Repository\GuestRepository")
- * @ORM\Table(name="guests")
+ * @ORM\Entity(repositoryClass="Flock\MainBundle\Repository\AttendeeRepository")
+ * @ORM\Table(name="attendees")
  * @ORM\HasLifecycleCallbacks
  */
-class Guest
+class Attendee
 {
 
     /**
@@ -25,7 +25,7 @@ class Guest
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Flock\MainBundle\Entity\Flock", inversedBy="guests")
+     * @ORM\ManyToOne(targetEntity="Flock\MainBundle\Entity\Flock", inversedBy="attendees")
      * @ORM\JoinColumn(name="flock_id", referencedColumnName="id")
      */
     protected $flock;
@@ -66,7 +66,7 @@ class Guest
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -86,7 +86,7 @@ class Guest
     /**
      * Get createdAt
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getCreatedAt()
     {
@@ -106,7 +106,7 @@ class Guest
     /**
      * Get updatedAt
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getUpdatedAt()
     {
@@ -126,7 +126,7 @@ class Guest
     /**
      * Get flock
      *
-     * @return Flock\MainBundle\Entity\Flock 
+     * @return Flock\MainBundle\Entity\Flock
      */
     public function getFlock()
     {
@@ -146,7 +146,7 @@ class Guest
     /**
      * Get user
      *
-     * @return Flock\MainBundle\Entity\User 
+     * @return Flock\MainBundle\Entity\User
      */
     public function getUser()
     {
