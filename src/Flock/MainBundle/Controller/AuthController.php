@@ -34,6 +34,7 @@ class AuthController extends Controller
      */
     public function twitterAction(Request $request)
     {
-         return new RedirectResponse($request->headers->get('referer'));
+        $redirectTo = $request->headers->get('referer') ?: '/';
+        return new RedirectResponse($redirectTo);
     }
 }
