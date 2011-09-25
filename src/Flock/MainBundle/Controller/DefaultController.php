@@ -20,6 +20,16 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Extra\Route("/login", name="flock_login")
+     *
+     * @return \Symfony\Bundle\FrameworkBundle\Controller\Response
+     */
+    public function loginAction()
+    {
+        return $this->render('FlockMainBundle:Default:index.html.twig', array());
+    }
+
+    /**
      * @Extra\Route("/about", name="flock_about")
      *
      * @return \Symfony\Bundle\FrameworkBundle\Controller\Response

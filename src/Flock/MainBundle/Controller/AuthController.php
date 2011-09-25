@@ -18,15 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 class AuthController extends Controller
 {
     /**
-     * @Extra\Route("/login", name="flock_login")
-     * @return \Symfony\Bundle\FrameworkBundle\Controller\Response
-     */
-    public function indexAction()
-    {
-        return $this->render('FlockMainBundle:Default:index.html.twig', array());
-    }
-
-    /**
      * @Extra\Route("/twitter", name="twitter_auth")
      *
      * @param \Symfony\Component\HttpFoundation\Request $request

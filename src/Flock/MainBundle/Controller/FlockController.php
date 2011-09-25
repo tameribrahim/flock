@@ -124,7 +124,7 @@ class FlockController extends Controller
     }
 
     /**
-     * @Extra\Route("/edit/{id}", name="flock_edit")
+     * @Extra\Route("/{id}/edit", name="flock_edit")
      * @Extra\ParamConverter("flock", class="FlockMainBundle:Flock")
      * @Extra\Template("FlockMainBundle:Flock:show.html.twig")
      *

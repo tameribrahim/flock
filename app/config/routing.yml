@@ -3,8 +3,8 @@
 #   resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
 #   prefix:   /_internal
 
-flock_main:
-   resource: "@FlockMainBundle/Resources/config/routing.yml"
-
 logout:
     pattern:   /logout
+
+flock_main:
+   resource: "@FlockMainBundle/Resources/config/routing.yml"

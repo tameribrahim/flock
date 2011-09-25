@@ -1,11 +1,11 @@
+flock_auth:
+    resource: "@FlockMainBundle/Controller/AuthController.php"
+    type:     annotation
+
 flock_default:
     resource: "@FlockMainBundle/Controller/DefaultController.php"
     type:     annotation
 
 flock:
     resource: "@FlockMainBundle/Controller/FlockController.php"
-    type:     annotation
-
-flock_auth:
-    resource: "@FlockMainBundle/Controller/AuthController.php"
     type:     annotation
