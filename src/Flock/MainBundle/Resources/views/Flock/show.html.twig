@@ -1,60 +1,131 @@
 {% extends "FlockMainBundle::layout.html.twig" %}
-
+{% block title %}{{ flock.name }}{% endblock %}
 {% block content %}
     <div class="page-header">
-        <h1>{{ flock.name }}&nbsp;<small><a href="#">http://www.symfony.com</a></small></h1>
-        <div class="join"><button class="btn success"><strong>Join this flock!</strong></button></div>
+        <h1>{{ flock.name }}
+        {% if flock.website %}
+            <small><a href="{{ flock.website }}" target="_blank">{{ flock.website }}</a></small></h1>
+        {% endif %}
+        <div class="row">
+            <div class="span4">
+                <a class="btn info" href="{{ path('flock_toggle_join', { 'id': flock.id }) }}"><strong>
+                {% if isAttending %}
+                    Unjoin
+                {% else %}
+                    Join
+                {% endif %}
+                </strong></a>
+            </div>
+            <div class="span3 offset7">
+                <a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-text="{{ defaultTweet }}" data-via="flockio">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="span14">
             <div class="title">Details</div>
-            <div class="info"><span class="highlight">{{ flock.startsAt }}</span>
-            {% if flock.startsAt|length %}
-                &nbsp;to&nbsp;<span class="highlight">{{ flock.startsAt }}</span>
+            <div class="info"><span class="highlight">{{ flock.startsAt.format('d M, Y H:i A') }}</span>
+            {% if flock.endsAt %}
+                &nbsp;to&nbsp;<span class="highlight">{{ flock.endsAt.format('d M, Y H:i A') }}</span>
             {% endif %}
             &nbsp;at&nbsp;<span class="highlight">{{ flock.place }}</span></div>
-            <div class="info"><a href="#">+ View location on map</a></div>
-            <div class="title">Who are attending?</div>
-            <div class="info">{{ flock.getAttendants }}</div>
-            <div class="info"><a href="#">+ View all attendants</a></div>
-            <div class="title">Twitter conversation</div>
-                <div class="info">Join the conversation with <span class="highlight">#Symfony2</span></div>
-                {% block inner_javascript%}
-                    <script src="http://widgets.twimg.com/j/2/widget.js"></script>
-                {% endblock %}
-                <script>
-                new TWTR.Widget({
-                  version: 2,
-                  type: 'search',
-                  search: '#haiku',
-                  interval: 30000,
-                  title: '',
-                  subject: '#Symfony2',
-                  width: 'auto',
-                  height: 300,
-                  theme: {
-                    shell: {
-                      background: '#8ec1da',
-                      color: '#ffffff'
-                    },
-                    tweets: {
-                      background: '#ffffff',
-                      color: '#444444',
-                      links: '#1985b5'
-                    }
-                  },
-                  features: {
-                    scrollbar: true,
-                    loop: true,
-                    live: true,
-                    hashtags: true,
-                    timestamp: true,
-                    avatars: true,
-                    toptweets: true,
-                    behavior: 'all'
-                  }
-                }).render().start();
-                </script>
-        </div>
+            <div class="info"><a href="#" onclick="toggleMap()" id="view_map_link">+ View location on map</a></div>
+            <div id="map_canvas" class="map"></div>
+            <div class="title">Attendees [ {{ attendeeCount }} ]</div>
+            <div class="info" id="flock_attendees">
+                {% if attendees|length %}
+                    <ul class="media-grid">
+                        {% for attendee in attendees %}
+                            <li>
+                                <a href="https://twitter.com/account/redirect_by_id?id={{ attendee.user.twitterID }}" target="_blank" rel='twipsy' title='<strong>@{{ attendee.user.screenName }}</strong>'><img class="thumbnail" src="{{ attendee.user.profileImageUrl('mini') }}" alt="{{ attendee.user.screenName }}"></a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    {% if attendeeCount > 1 %}
+                        <div class="info"><a href="#" onClick="toggleAttendees()">+ View all attendees</a></div>
+                    {% endif %}
+                {% else %}
+                    No one is attending yet! :(
+                {% endif %}
+            </div>
+            {% if flock.hashTag %}
+                <div class="title">Twitter conversation</div>
+                    <div class="info">Join the conversation with <span class="highlight">{{ flock.hashTag }}</span></div>
+                    {% block inner_javascript%}
+                        <script src="http://widgets.twimg.com/j/2/widget.js"></script>
+                    {% endblock %}
+                    <script>
+                    new TWTR.Widget({
+                      version: 2,
+                      type: 'search',
+                      search: '{{ flock.hashTag }}',
+                      interval: 30000,
+                      title: '',
+                      subject: '{{ flock.hashTag }}',
+                      width: 'auto',
+                      height: 300,
+                      theme: {
+                        shell: {
+                          background: '#8ec1da',
+                          color: '#ffffff'
+                        },
+                        tweets: {
+                          background: '#ffffff',
+                          color: '#444444',
+                          links: '#1985b5'
+                        }
+                      },
+                      features: {
+                        scrollbar: false,
+                        loop: true,
+                        live: true,
+                        hashtags: true,
+                        timestamp: true,
+                        avatars: true,
+                        toptweets: true,
+                        behavior: 'default'
+                      }
+                    }).render().start();
+                    </script>
+                </div>
+            {% endif %}
     </div>
+{% endblock %}
+
+{% block inner_javascripts %}
+    <script src="{{ asset('bundles/flockmain/js/jquery-1.5.2.min.js') }}"></script>
+    <script src="{{ asset('bundles/flockmain/js/bootstrap-twipsy.js') }}"></script>
+    <script src="{{ asset('bundles/flockmain/js/flock/map-show.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("a[rel=twipsy]").twipsy({
+                live: true,
+                html: true
+            });
+        });
+
+        function toggleMap()
+        {
+            if ('none' ==  $('#map_canvas').css('display')) {
+                $('#map_canvas').css('width', 'auto');
+                $('#map_canvas').css('height', '250px');
+                $('#map_canvas').css('display', 'block');
+                $('#view_map_link').text('- Hide location on map');
+                loadMapScript('{{ app.session.locale }}', {{ flock.lat }}, {{ flock.lng }}, {{ flock.zoom }});  //load GMAp
+            } else {
+                $('#map_canvas').css('display', 'none');
+                $('#view_map_link').text('+ View location on map');
+            }
+        }
+
+        function toggleAttendees()
+        {
+            $.ajax({
+              url: "{{ path('flock_attendees', { 'id': flock.id }) }}",
+              success: function(data){
+                $('#flock_attendees').html(data);
+              }
+            });
+        }
+    </script>
 {% endblock %}

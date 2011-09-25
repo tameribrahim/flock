@@ -71,7 +71,7 @@ class User extends BaseUser implements \Serializable
     protected $flocksCreated;
 
     /**
-     * @ORM\OneToMany(targetEntity="Guest", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Attendee", mappedBy="user")
      */
     protected $flocksAttending;
 
@@ -174,8 +174,11 @@ class User extends BaseUser implements \Serializable
      *
      * @return string
      */
-    public function getProfileImageUrl()
+    public function getProfileImageUrl($size = 'normal')
     {
+        if ($size != 'normal') {
+            return str_replace('_normal','_'.$size,$this->profileImageUrl);
+        }
         return $this->profileImageUrl;
     }
 
@@ -326,9 +329,9 @@ class User extends BaseUser implements \Serializable
     /**
      * Add flocksAttending
      *
-     * @param Flock\MainBundle\Entity\Guest $flocksAttending
+     * @param Flock\MainBundle\Entity\Attendee $flocksAttending
      */
-    public function addFlocksAttending(\Flock\MainBundle\Entity\Guest $flocksAttending)
+    public function addFlocksAttending(\Flock\MainBundle\Entity\Attendee $flocksAttending)
     {
         $this->flocksAttending[] = $flocksAttending;
     }

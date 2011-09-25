@@ -1,0 +1,11 @@
+{% if attendees|length %}
+    <ul class="media-grid">
+        {% for attendee in attendees %}
+            <li>
+                <a href="https://twitter.com/account/redirect_by_id?id={{ attendee.user.twitterID }}" target="_blank" rel='twipsy' title='<strong>@{{ attendee.user.screenName }}</strong>'><img class="thumbnail" src="{{ attendee.user.profileImageUrl('mini') }}" alt="{{ attendee.user.screenName }}"></a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    No one is attending yet! :(
+{% endif %}

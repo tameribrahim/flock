@@ -8,6 +8,7 @@ namespace Flock\MainBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Flock\MainBundle\Entity\Flock;
+use Flock\MainBundle\Entity\User;
 use Flock\MainBundle\Form\FlockForm;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -53,7 +54,37 @@ class FlockController extends Controller
      */
     public function showAction(Flock $flock)
     {
-        return array('flock' => $flock);
+        $defaultTweet = "Join me for ".$flock->getName();
+        if ($flock->getHashTag()) {
+            $defaultTweet .= " ".$flock->getHashTag();
+        }
+        if (strlen($defaultTweet) > 140) {
+            $diff = strlen($defaultTweet) - 140;
+            $refactoredName = substr($flock->getName(), 0, strlen($defaultTweet) - $diff - 3).'...';
+            $defaultTweet = "Join me for ".$refactoredName;
+            if ($flock->getHashTag()) {
+                $defaultTweet .= " ".$flock->getHashTag();
+            }
+        }
+
+        $isAttending = false;
+        $user = $this->get('security.context')->getToken()->getUser();
+        if ($user instanceof User) {
+            if ($this->getDoctrine()->getRepository('FlockMainBundle:Attendee')->findOneBy(array('flock' => $flock, 'user' => $user->getId()))) {
+                $isAttending = true;
+            }
+        }
+
+        $attendees = $this->getDoctrine()->getRepository('FlockMainBundle:Attendee')->findBy(array('flock' => $flock),array(),1,0);
+        $attendeeCount = $this->getDoctrine()->getRepository('FlockMainBundle:Attendee')->getAttendeeCount($flock);
+
+        return array(
+            'flock' => $flock,
+            'isAttending' => $isAttending,
+            'defaultTweet' => $defaultTweet,
+            'attendees' => $attendees,
+            'attendeeCount' => $attendeeCount,
+        );
     }
 
     /**
@@ -93,5 +124,52 @@ class FlockController extends Controller
         $form->setData($flock);
 
         return $form;
+    }
+
+    /**
+     * @Extra\Route("/{id}/toggleJoin", name="flock_toggle_join")
+     * @Extra\ParamConverter("flock", class="FlockMainBundle:Flock")
+     *
+     * @param \Flock\MainBundle\Entity\Flock $flock
+     * @return array
+     */
+    public function toggleJoinAction(Flock $flock)
+    {
+        $user = $this->get('security.context')->getToken()->getUser();
+        $this->getDoctrine()->getRepository('FlockMainBundle:Attendee')->addOrRemoveAttendee($flock, $user);
+
+        return new RedirectResponse($this->generateUrl('flock_show',array('id' => $flock)));
+    }
+
+    /**
+     * @Extra\Route("/{id}/attendees", name="flock_attendees")
+     * @Extra\ParamConverter("flock", class="FlockMainBundle:Flock")
+     * @Extra\Template("FlockMainBundle:Flock:attendees.html.twig")
+     *
+     * @param \Flock\MainBundle\Entity\Flock $flock
+     * @return array
+     */
+    public function getAttendeesAction(Flock $flock)
+    {
+        $attendees = $flock->getAttendees();
+
+        return array('attendees' => $attendees);
+    }
+
+    /**
+     * @Extra\Route("/myFlocks", name="my_flocks")
+     * @Extra\Template("FlockMainBundle:Flock:attendees.html.twig")
+     *
+     * @return array
+     */
+    public function myFlocksAction()
+    {
+        $flocksCreated = $this->get('security.context')->getToken()->getUser()->getFlocksCreated();
+        $flocksAttending = $this->get('security.context')->getToken()->getUser()->getFlocksAttending();
+
+        return array(
+            'flocksCreated' => $flocksCreated,
+            'flocksAttending' => $flocksAttending,
+        );
     }
 }

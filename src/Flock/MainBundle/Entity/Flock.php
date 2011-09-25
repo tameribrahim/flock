@@ -92,14 +92,20 @@ class Flock
     protected $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="Guest", mappedBy="flock")
+     * @ORM\OneToMany(targetEntity="Attendee", mappedBy="flock")
      */
-    protected $guests;
+    protected $attendees;
 
     public function __construct() {
         $date = new \DateTime('+1 hours');
         $date->setTime(date('H', $date->getTimestamp()), 0, 0);
         $this->setStartsAt($date);
+        $this->attendees = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return (string)$this->getId();
     }
 
     /**
@@ -447,22 +453,22 @@ class Flock
     }
 
     /**
-     * Add guests
+     * Add attendees
      *
-     * @param Flock\MainBundle\Entity\Guest $guests
+     * @param Flock\MainBundle\Entity\Attendee $attendees
      */
-    public function addGuests(\Flock\MainBundle\Entity\Guest $guests)
+    public function addAttendees(\Flock\MainBundle\Entity\Attendee $attendees)
     {
-        $this->guests[] = $guests;
+        $this->attendees[] = $attendees;
     }
 
     /**
-     * Get guests
+     * Get attendees
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getGuests()
+    public function getAttendees()
     {
-        return $this->guests;
+        return $this->attendees;
     }
 }

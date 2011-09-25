@@ -44,14 +44,36 @@ body {
 }
 
 .content .highlight {
-    background-color: #fff6d9;
+    background-color: #F8F0AF;
     padding: 3px;
+    font-weight: bold;
+}
+
+.map {
+    margin-bottom: 10px;
+    display: none;
+}
+
+.modal-body {
+    padding: 0px;
+}
+
+.modal-body #twitter_message_char_left {
+    margin-top: 10px;
+    margin-right: 10px;
+    padding-right: 10px;
+    float: right;
+    font-size: 16px;
+}
+
+.modal-body #twitter_message_char_left #twitter_message_char_left_count {
+    font-size: 16px;
 }
 
 /* Page header tweaks */
 .page-header {
     background-color: #f5f5f5;
-    padding: 20px 20px 10px;
+    padding: 20px 20px 0px;
     margin: -20px -20px 20px;
 }
 
@@ -61,4 +83,20 @@ small a {
 
 small a:hover {
     color: #0069D6;
+}
+
+.media-grid a {
+    margin-bottom: 5px;
+}
+
+.media-grid a:hover {
+  border-color: #AAAAAA;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+  -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+  box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+}
+
+.sign-in-button {
+    margin-bottom: -10px;
+    margin-top: -3px;
 }

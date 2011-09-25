@@ -6,14 +6,27 @@
 {% endblock %}
 
 {% block body %}
-<div class="topbar">
-    <div class="fill">
+<div class="topbar" data-dropdown="dropdown">
+    <div class="topbar-inner">
         <div class="container">
-            <a class="brand" href="#"><strong>Flock</strong></a>
+            <h3><a href="#"><strong>Flock</strong></a></h3>
             <ul class="nav">
                 <li class="active"><a href="#">Home</a></li>
                 <li><a href="#about">Flocks</a></li>
                 <li><a href="#contact">About</a></li>
+            </ul>
+            <ul class="nav secondary-nav">
+                {% if is_granted("ROLE_TWITTER") %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"><img src="{{ app.user.profileImageUrl('mini') }}" alt="" style="margin-bottom: -10px; margin-right: 10px;">{{ app.user.screenName }}&nbsp;</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('my_flocks') }}">My Flocks</a></li>
+                            <li><a href="{{ path('logout') }}">Sign out</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <a href="{{ path('twitter_auth') }}" class="sign-in-button"><img src="{{ asset('bundles/flockmain/images/sign-in-with-twitter-d.png') }}" alt=""></a>
+                {% endif %}
             </ul>
         </div>
     </div>
@@ -31,6 +44,19 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script src="{{ asset('bundles/flockmain/js/jquery-1.5.2.min.js') }}"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("body").bind("click", function (e) {
+            $('a.dropdown-toggle').parent("li").removeClass("open");
+        });
+
+        $("a.dropdown-toggle").click(function (e) {
+            var $li = $(this).parent("li").toggleClass('open');
+            return false;
+        });
+    });
+    </script>
     {% block inner_javascripts %}{% endblock %}
 {% endblock %}
 

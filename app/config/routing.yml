@@ -6,3 +6,5 @@
 flock_main:
    resource: "@FlockMainBundle/Resources/config/routing.yml"
 
+logout:
+    pattern:   /logout
