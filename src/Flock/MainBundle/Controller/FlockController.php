@@ -13,6 +13,7 @@ use Flock\MainBundle\Form\FlockForm;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
+use Symfony\Component\HttpFoundation\Request;
 
 class FlockController extends Controller
 {
@@ -42,6 +43,41 @@ class FlockController extends Controller
         }
 
         return array('form' => $form->createView());
+    }
+
+    /**
+     * @Extra\Route("/flocks", name="flocks_list")
+     * @Extra\Template("FlockMainBundle:Flock:list.html.twig")
+     *
+     * @return array
+     */
+    public function listAction(Request $request)
+    {
+        $limit = $request->get('limit');
+        $offset = $request->get('offset');
+
+        $flocks = $this->getDoctrine()->getRepository('FlockMainBundle:Flock')->getActiveFlocks($limit, $offset);
+        return array(
+            'flocks' => $flocks,
+            'flockCount' => 11,
+        );
+    }
+
+    /**
+     * @Extra\Route("/myFlocks", name="my_flocks")
+     * @Extra\Template("FlockMainBundle:Flock:attendees.html.twig")
+     *
+     * @return array
+     */
+    public function myFlocksAction()
+    {
+        $flocksCreated = $this->get('security.context')->getToken()->getUser()->getFlocksCreated();
+        $flocksAttending = $this->get('security.context')->getToken()->getUser()->getFlocksAttending();
+
+        return array(
+            'flocksCreated' => $flocksCreated,
+            'flocksAttending' => $flocksAttending,
+        );
     }
 
     /**
@@ -75,7 +111,7 @@ class FlockController extends Controller
             }
         }
 
-        $attendees = $this->getDoctrine()->getRepository('FlockMainBundle:Attendee')->findBy(array('flock' => $flock),array(),1,0);
+        $attendees = $this->getDoctrine()->getRepository('FlockMainBundle:Attendee')->findBy(array('flock' => $flock),array(),10,0);
         $attendeeCount = $this->getDoctrine()->getRepository('FlockMainBundle:Attendee')->getAttendeeCount($flock);
 
         return array(
@@ -117,15 +153,6 @@ class FlockController extends Controller
         return array('form' => $form->createView());
     }
 
-    private function buildForm(Flock $flock)
-    {
-        $factory = $this->get('form.factory');
-        $form = $factory->create(new FlockForm());
-        $form->setData($flock);
-
-        return $form;
-    }
-
     /**
      * @Extra\Route("/{id}/toggleJoin", name="flock_toggle_join")
      * @Extra\ParamConverter("flock", class="FlockMainBundle:Flock")
@@ -156,20 +183,12 @@ class FlockController extends Controller
         return array('attendees' => $attendees);
     }
 
-    /**
-     * @Extra\Route("/myFlocks", name="my_flocks")
-     * @Extra\Template("FlockMainBundle:Flock:attendees.html.twig")
-     *
-     * @return array
-     */
-    public function myFlocksAction()
+    private function buildForm(Flock $flock)
     {
-        $flocksCreated = $this->get('security.context')->getToken()->getUser()->getFlocksCreated();
-        $flocksAttending = $this->get('security.context')->getToken()->getUser()->getFlocksAttending();
+        $factory = $this->get('form.factory');
+        $form = $factory->create(new FlockForm());
+        $form->setData($flock);
 
-        return array(
-            'flocksCreated' => $flocksCreated,
-            'flocksAttending' => $flocksAttending,
-        );
+        return $form;
     }
 }

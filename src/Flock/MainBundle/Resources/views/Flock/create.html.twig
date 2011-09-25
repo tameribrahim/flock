@@ -99,7 +99,6 @@
 {% endblock %}
 
 {% block inner_javascripts %}
-    <script src="{{ asset('bundles/flockmain/js/jquery-1.5.2.min.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/i18n/jquery-ui-i18n.min.js"></script>
     <script src="{{ asset('bundles/flockmain/js/jquery.ui.timepicker.js') }}"></script>
@@ -178,4 +177,10 @@
             }
         }
     </script>
+{% endblock %}
+
+{% block menu %}
+    <li><a href="{{ path('flock_home') }}">Home</a></li>
+    <li><a href="{{ path('flocks_list') }}">Flocks</a></li>
+    <li><a href="{{ path('flock_about') }}">About</a></li>
 {% endblock %}

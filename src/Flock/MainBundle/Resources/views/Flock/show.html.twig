@@ -31,7 +31,7 @@
             &nbsp;at&nbsp;<span class="highlight">{{ flock.place }}</span></div>
             <div class="info"><a href="#" onclick="toggleMap()" id="view_map_link">+ View location on map</a></div>
             <div id="map_canvas" class="map"></div>
-            <div class="title">Attendees [ {{ attendeeCount }} ]</div>
+            <div class="title">Attendees ({{ attendeeCount }})</div>
             <div class="info" id="flock_attendees">
                 {% if attendees|length %}
                     <ul class="media-grid">
@@ -41,7 +41,7 @@
                             </li>
                         {% endfor %}
                     </ul>
-                    {% if attendeeCount > 1 %}
+                    {% if attendeeCount > 10 %}
                         <div class="info"><a href="#" onClick="toggleAttendees()">+ View all attendees</a></div>
                     {% endif %}
                 {% else %}
@@ -93,7 +93,6 @@
 {% endblock %}
 
 {% block inner_javascripts %}
-    <script src="{{ asset('bundles/flockmain/js/jquery-1.5.2.min.js') }}"></script>
     <script src="{{ asset('bundles/flockmain/js/bootstrap-twipsy.js') }}"></script>
     <script src="{{ asset('bundles/flockmain/js/flock/map-show.js') }}"></script>
     <script type="text/javascript">
@@ -128,4 +127,10 @@
             });
         }
     </script>
+{% endblock %}
+
+{% block menu %}
+    <li><a href="{{ path('flock_home') }}">Home</a></li>
+    <li><a href="{{ path('flocks_list') }}">Flocks</a></li>
+    <li><a href="{{ path('flock_about') }}">About</a></li>
 {% endblock %}

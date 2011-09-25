@@ -1,0 +1,49 @@
+{% extends "FlockMainBundle::layout.html.twig" %}
+{% block content %}
+    <div id="content">
+        <div class="title">Upcoming Flocks</div>
+        {#{% for flock in flocks %}#}
+            <div class="flock-list-item">
+                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
+            </div>
+            <div class="flock-list-item">
+                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
+            </div>
+            <div class="flock-list-item">
+                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
+            </div>
+            <div class="flock-list-item">
+                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
+            </div>
+            <div class="flock-list-item">
+                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
+            </div>
+            <div class="flock-list-item">
+                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
+            </div>
+            <div class="flock-list-item">
+                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
+            </div>
+            <div class="flock-list-item">
+                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
+            </div>
+            <div class="flock-list-item">
+                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
+            </div>
+            <div class="flock-list-item">
+                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
+            </div>
+        {#{% endfor %}#}
+        {% if flockCount > 10 %}
+            <div class="row">
+                <div class="offset5"><a href="#" class="btn large">Show more flocks</a></div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block menu %}
+    <li><a href="{{ path('flock_home') }}">Home</a></li>
+    <li class="active"><a href="{{ path('flocks_list') }}">Flocks</a></li>
+    <li><a href="{{ path('flock_about') }}">About</a></li>
+{% endblock %}

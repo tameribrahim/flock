@@ -12,4 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class FlockRepository extends EntityRepository
 {
+    /**
+     * @param $limit
+     * @param $offset
+     * @return array
+     */
+    public function getActiveFlocks($limit, $offset)
+    {
+        return array();
+    }
+
+    public function getActiveFlocksCount()
+    {
+        return 100;
+    }
 }
