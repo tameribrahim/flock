@@ -98,13 +98,7 @@ class FlockController extends Controller
      */
     public function myFlocksAction()
     {
-//        $flocksCreated = $this->get('security.context')->getToken()->getUser()->getFlocksCreated();
-//        $flocksAttending = $this->get('security.context')->getToken()->getUser()->getFlocksAttending();
-
-        return array(
-//            'flocksCreated' => $flocksCreated,
-//            'flocksAttending' => $flocksAttending,
-        );
+        return array();
     }
 
     /**
