@@ -92,18 +92,18 @@ class FlockController extends Controller
 
     /**
      * @Extra\Route("/myFlocks", name="my_flocks")
-     * @Extra\Template("FlockMainBundle:Flock:attendees.html.twig")
+     * @Extra\Template("FlockMainBundle:Flock:my_flocks.html.twig")
      *
      * @return array
      */
     public function myFlocksAction()
     {
-        $flocksCreated = $this->get('security.context')->getToken()->getUser()->getFlocksCreated();
-        $flocksAttending = $this->get('security.context')->getToken()->getUser()->getFlocksAttending();
+//        $flocksCreated = $this->get('security.context')->getToken()->getUser()->getFlocksCreated();
+//        $flocksAttending = $this->get('security.context')->getToken()->getUser()->getFlocksAttending();
 
         return array(
-            'flocksCreated' => $flocksCreated,
-            'flocksAttending' => $flocksAttending,
+//            'flocksCreated' => $flocksCreated,
+//            'flocksAttending' => $flocksAttending,
         );
     }
 

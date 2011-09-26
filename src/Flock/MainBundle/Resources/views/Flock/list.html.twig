@@ -5,7 +5,7 @@
         <div id="flock-list">
             {% for flock in flocks %}
                 <div class="flock-list-item">
-                    <strong>{{ flock.name }}</strong>&nbsp;on&nbsp;<strong>{{ flock.startsAt.format('d M, Y H:i A') }}</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
+                    <strong>{{ flock.name }}</strong>&nbsp;on&nbsp;<strong>{{ flock.startsAt.format('d M, Y H:i A') }}</strong>&nbsp;<a href="{{ path('flock_show', { 'id': flock.id }) }}">Details&nbsp;&raquo;</a>
                 </div>
             {% endfor %}
             {% if showLoadMore %}
