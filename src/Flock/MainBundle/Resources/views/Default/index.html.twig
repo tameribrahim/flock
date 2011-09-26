@@ -2,6 +2,13 @@
 {% block content %}
     <div id="content">
         <h2>Welcome</h2>
+        <div class="info">
+            {% for activity in activities %}
+                <div class="activity">
+                    <a href="https://twitter.com/account/redirect_by_id?id={{ activity.twitterID }}" target="_blank" >@{{ activity.username }}</a>&nbsp;{{ activity.activityAsString }}&nbsp;<a href="{{ path('flock_show', { 'id': activity.flockID }) }}">{{ activity.flockName }}</a>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
 

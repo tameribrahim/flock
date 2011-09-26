@@ -5,7 +5,8 @@ namespace Flock\MainBundle\Repository;
 use Doctrine\ORM\EntityRepository,
     Flock\MainBundle\Entity\User,
     Flock\MainBundle\Entity\Flock,
-    Flock\MainBundle\Entity\Attendee;
+    Flock\MainBundle\Entity\Attendee,
+    Flock\MainBundle\Repository\ActivityRepository;
 
 /**
  * AttendeeRepository
@@ -19,11 +20,20 @@ class AttendeeRepository extends EntityRepository
     {
         if ($guest = $this->findOneBy(array('flock' => $flock, 'user' => $user->getId()))) {
             $this->getEntityManager()->remove($guest);
+
+            //add activity
+            $this->getEntityManager()->getRepository('FlockMainBundle:Activity')
+                ->addActivity($user, $flock, ActivityRepository::ACTIVITY_UNJOINED_FLOCK);
+
         } else {
             $guest = new Attendee();
             $guest->setFlock($flock);
             $guest->setUser($user);
             $this->getEntityManager()->persist($guest);
+
+            //add activity
+            $this->getEntityManager()->getRepository('FlockMainBundle:Activity')
+                ->addActivity($user, $flock, ActivityRepository::ACTIVITY_JOINED_FLOCK);
         }
         $this->getEntityManager()->flush();
     }

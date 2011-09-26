@@ -1,6 +1,6 @@
 <?php
 
-namespace Flock\MainBundle\Entity;
+namespace Flock\MainBundle\Repository;
 
 use Doctrine\ORM\EntityRepository,
     Flock\MainBundle\Entity\User,
@@ -17,16 +17,29 @@ class ActivityRepository extends EntityRepository
 {
     const ACTIVITY_JOINED_FLOCK = 1;
     const ACTIVITY_UNJOINED_FLOCK = 2;
-    const ACTIVITY_RESCHEDULED_FLOCK = 3;
-    const ACTIVITY_CHANGED_FLOCK_NAME = 4;
+    const ACTIVITY_CREATED_FLOCK = 3;
+    const ACTIVITY_UPDATED_FLOCK = 4;
+    const ACTIVITY_RESCHEDULED_FLOCK = 5;
+    const ACTIVITY_CHANGED_FLOCK_NAME = 6;
 
-    public function addActivity(User $user, Flock $flock, $activity)
+    public function addActivity(User $user, Flock $flock, $activityType)
     {
-        //TODO: add activity
+        $activity = new Activity();
+        $activity->setActivityType($activityType);
+        $activity->setUser($user);
+        $activity->setFlock($flock);
+        $activity->setUsername($user->getScreenName());
+        $activity->setTwitterID($user->getTwitterID());
+        $activity->setFlockName($flock->getName());
+        $activity->setStartsAt($flock->getStartsAt());
+        $activity->setEndsAt($flock->getEndsAt());
+
+        $this->getEntityManager()->persist($activity);
+        $this->getEntityManager()->flush();
     }
 
     public function getLatestActivity()
     {
-        //TODO: retrieve activity and order by created_at
+        return $this->findBy(array('activityType' => array(1,3,4)), array('createdAt' => 'DESC'), 10, 0);
     }
 }

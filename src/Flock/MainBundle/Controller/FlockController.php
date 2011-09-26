@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Component\HttpFoundation\Request;
+use Flock\MainBundle\Repository\ActivityRepository;
 
 class FlockController extends Controller
 {
@@ -37,6 +38,10 @@ class FlockController extends Controller
                 $flock->setUser($this->get('security.context')->getToken()->getUser());
                 $em->persist($flock);
                 $em->flush();
+
+                //add activity
+                $this->getDoctrine()->getRepository('FlockMainBundle:Activity')
+                    ->addActivity($this->get('security.context')->getToken()->getUser(), $flock, ActivityRepository::ACTIVITY_CREATED_FLOCK);
 
                 return new RedirectResponse($this->generateUrl('flock_show', array('id' => $flock->getId())));
             }
@@ -167,7 +172,11 @@ class FlockController extends Controller
                 $em->persist($flock);
                 $em->flush();
 
-                return new RedirectResponse($this->generateUrl('flock_create'));
+                //add activity
+                $this->getDoctrine()->getRepository('FlockMainBundle:Activity')
+                    ->addActivity($this->get('security.context')->getToken()->getUser(), $flock, ActivityRepository::ACTIVITY_UPDATED_FLOCK);
+
+                return new RedirectResponse($this->generateUrl('flock_show', array('id' => $flock->getId())));
             }
         }
 

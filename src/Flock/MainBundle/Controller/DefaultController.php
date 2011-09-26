@@ -11,12 +11,16 @@ class DefaultController extends Controller
 {
     /**
      * @Extra\Route("/", name="flock_home")
+     * @Extra\Template("FlockMainBundle:Default:index.html.twig")
      *
-     * @return Flock\MainBundle\Controller\DefaultController
+     * @return array
     */
     public function indexAction()
     {
-        return $this->render('FlockMainBundle:Default:index.html.twig', array());
+        $activities = $this->getDoctrine()->getRepository('FlockMainBundle:Activity')
+            ->getLatestActivity();
+
+        return array('activities' => $activities);
     }
 
     /**

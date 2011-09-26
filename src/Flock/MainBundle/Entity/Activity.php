@@ -3,13 +3,14 @@
 namespace Flock\MainBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Flock\MainBundle\Repository\ActivityRepository;
 
 /**
  * Flock\MainBundle\Entity\Activity
  *
  * @ORM\Table(name="activities")
  * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="Flock\MainBundle\Respository\ActivityRepository")
+ * @ORM\Entity(repositoryClass="Flock\MainBundle\Repository\ActivityRepository")
  */
 class Activity
 {
@@ -34,15 +35,30 @@ class Activity
     protected $user;
 
     /**
+     * @ORM\Column(name="user_id", type="integer")
+     */
+    protected $userID;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Flock\MainBundle\Entity\Flock", inversedBy="activity")
      * @ORM\JoinColumn(name="flock_id", referencedColumnName="id")
      */
     protected $flock;
 
     /**
+     * @ORM\Column(name="flock_id", type="integer")
+     */
+    protected $flockID;
+
+    /**
      * @ORM\Column(name="username", type="string", length="255")
      */
     protected $username;
+
+    /**
+     * @ORM\Column(name="twitter_id", type="string", length="100")
+     */
+    protected $twitterID;
 
     /**
      * @ORM\Column(name="flock_name", type="string", length="255")
@@ -55,7 +71,7 @@ class Activity
     protected $startsAt;
 
     /**
-     * @ORM\Column(name="ends_at", type="datetime")
+     * @ORM\Column(name="ends_at", type="datetime", nullable="true")
      */
     protected $endsAt;
 
@@ -79,9 +95,23 @@ class Activity
         return $this->id;
     }
 
-    public function __toString()
+    public function getActivityAsString()
     {
-        //TODO: convert the activity into human readable string
+        switch ($this->getActivityType()) {
+            case ActivityRepository::ACTIVITY_CREATED_FLOCK:
+                $actionAsString = "created flock";
+                break;
+
+            case ActivityRepository::ACTIVITY_JOINED_FLOCK:
+                $actionAsString = "joined flock";
+                break;
+
+            case ActivityRepository::ACTIVITY_UPDATED_FLOCK:
+                $actionAsString = "updated flock";
+                break;
+        }
+
+        return $actionAsString;
     }
 
     /**
@@ -279,5 +309,65 @@ class Activity
     public function getFlock()
     {
         return $this->flock;
+    }
+
+    /**
+     * Set twitterID
+     *
+     * @param string $twitterID
+     */
+    public function setTwitterID($twitterID)
+    {
+        $this->twitterID = $twitterID;
+    }
+
+    /**
+     * Get twitterID
+     *
+     * @return string
+     */
+    public function getTwitterID()
+    {
+        return $this->twitterID;
+    }
+
+    /**
+     * Set flockID
+     *
+     * @param integer $flockID
+     */
+    public function setFlockID($flockID)
+    {
+        $this->flockID = $flockID;
+    }
+
+    /**
+     * Get flockID
+     *
+     * @return integer
+     */
+    public function getFlockID()
+    {
+        return $this->flockID;
+    }
+
+    /**
+     * Set userID
+     *
+     * @param integer $userID
+     */
+    public function setUserID($userID)
+    {
+        $this->userID = $userID;
+    }
+
+    /**
+     * Get userID
+     *
+     * @return integer 
+     */
+    public function getUserID()
+    {
+        return $this->userID;
     }
 }
