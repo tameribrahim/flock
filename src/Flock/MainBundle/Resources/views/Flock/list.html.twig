@@ -2,43 +2,23 @@
 {% block content %}
     <div id="content">
         <div class="title">Upcoming Flocks</div>
-        {#{% for flock in flocks %}#}
-            <div class="flock-list-item">
-                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
-            </div>
-            <div class="flock-list-item">
-                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
-            </div>
-            <div class="flock-list-item">
-                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
-            </div>
-            <div class="flock-list-item">
-                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
-            </div>
-            <div class="flock-list-item">
-                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
-            </div>
-            <div class="flock-list-item">
-                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
-            </div>
-            <div class="flock-list-item">
-                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
-            </div>
-            <div class="flock-list-item">
-                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
-            </div>
-            <div class="flock-list-item">
-                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
-            </div>
-            <div class="flock-list-item">
-                <strong>Flock Launch party!</strong>&nbsp;on&nbsp;<strong>30 Sep, 2011 18:00 PM</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
-            </div>
-        {#{% endfor %}#}
-        {% if flockCount > 10 %}
-            <div class="row">
-                <div class="offset5"><a href="#" class="btn large">Show more flocks</a></div>
-            </div>
-        {% endif %}
+        <div id="flock-list">
+            {% for flock in flocks %}
+                <div class="flock-list-item">
+                    <strong>{{ flock.name }}</strong>&nbsp;on&nbsp;<strong>{{ flock.startsAt.format('d M, Y H:i A') }}</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
+                </div>
+            {% endfor %}
+            {% if showLoadMore %}
+                {# There goes the link to load more!!! #}
+                <div class="row" id="more{{ offset }}">
+                    <div class="offset5"><a href="#" id="{{ offset }}" class="btn large more-flocks">Show more flocks</a></div>
+                </div>
+            {% else %}
+                <div class="row">
+                    <div class="offset5">End of the road, my dear friend.</div>
+                </div>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}
 
@@ -46,4 +26,29 @@
     <li><a href="{{ path('flock_home') }}">Home</a></li>
     <li class="active"><a href="{{ path('flocks_list') }}">Flocks</a></li>
     <li><a href="{{ path('flock_about') }}">About</a></li>
+{% endblock %}
+
+{% block inner_javascripts %}
+    <script type="text/javascript">
+        $(function() {
+            $('.more-flocks').live('click', function() {
+                var offset = $(this).attr("id");
+                if(offset) {
+                    $.ajax({
+                        url: "{{ path('flocks_list_ajax') }}",
+                        data: "offset="+ offset,
+                        cache: false,
+                        success: function(data){
+                            $("#flock-list").append(data);
+                            $("#more"+offset).remove();
+                        }
+                    });
+                } else {
+                    $(".more-flocks").text('The End');
+                }
+
+                return false;
+            });
+        });
+    </script>
 {% endblock %}

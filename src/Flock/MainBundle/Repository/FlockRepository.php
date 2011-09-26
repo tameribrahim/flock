@@ -19,11 +19,21 @@ class FlockRepository extends EntityRepository
      */
     public function getActiveFlocks($limit, $offset)
     {
-        return array();
+        $query = $this->createQueryBuilder('f')
+            ->select()
+            ->where('f.startsAt > :currentDateTime')
+            ->orderBy('f.startsAt','ASC')
+            ->setParameter('currentDateTime', new \DateTime('now', new \DateTimeZone('Pacific/Honolulu')))
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery();
+        return $query->getResult();
     }
 
     public function getActiveFlocksCount()
     {
-        return 100;
+        $query = $this->getEntityManager()->createQuery('SELECT COUNT(f.id) FROM '.$this->getEntityName().' f');
+
+        return $query->getSingleScalarResult();
     }
 }

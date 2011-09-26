@@ -46,20 +46,47 @@ class FlockController extends Controller
     }
 
     /**
-     * @Extra\Route("/flocks", name="flocks_list")
+     * @Extra\Route("/list/more", name="flocks_list_ajax")
+     * @Extra\Template("FlockMainBundle:Flock:_list_more.html.twig")
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return void
+     */
+    public function ajaxListAction(Request $request)
+    {
+        $limit = 10;
+        if (!$offset = $request->get('offset')) {
+            return new Response("Oops! That's weird!");
+        }
+
+        $flocks = $this->getDoctrine()->getRepository('FlockMainBundle:Flock')->getActiveFlocks($limit, $offset);
+        $flocksCounts = $this->getDoctrine()->getRepository('FlockMainBundle:Flock')->getActiveFlocksCount();
+
+        return array(
+            'flocks' => $flocks,
+            'offset' => $offset + $limit,
+            'showLoadMore' => $flocksCounts > $offset + $limit ? true : false,
+        );
+    }
+
+    /**
+     * @Extra\Route("/list", name="flocks_list")
      * @Extra\Template("FlockMainBundle:Flock:list.html.twig")
      *
      * @return array
      */
-    public function listAction(Request $request)
+    public function listAction()
     {
-        $limit = $request->get('limit');
-        $offset = $request->get('offset');
+        $limit = 10;
+        $offset = 0;
 
         $flocks = $this->getDoctrine()->getRepository('FlockMainBundle:Flock')->getActiveFlocks($limit, $offset);
+        $flocksCounts = $this->getDoctrine()->getRepository('FlockMainBundle:Flock')->getActiveFlocksCount();
+
         return array(
             'flocks' => $flocks,
-            'flockCount' => 11,
+            'offset' => $offset + $limit,
+            'showLoadMore' => $flocksCounts > $offset + $limit ? true : false,
         );
     }
 
@@ -171,7 +198,7 @@ class FlockController extends Controller
     /**
      * @Extra\Route("/{id}/attendees", name="flock_attendees")
      * @Extra\ParamConverter("flock", class="FlockMainBundle:Flock")
-     * @Extra\Template("FlockMainBundle:Flock:attendees.html.twig")
+     * @Extra\Template("FlockMainBundle:Flock:_attendees.html.twig")
      *
      * @param \Flock\MainBundle\Entity\Flock $flock
      * @return array

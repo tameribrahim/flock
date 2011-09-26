@@ -1,0 +1,15 @@
+{% for flock in flocks %}
+    <div class="flock-list-item">
+        <strong>{{ flock.name }}</strong>&nbsp;on&nbsp;<strong>{{ flock.startsAt.format('d M, Y H:i A') }}</strong>&nbsp;<a href="{{ path('flock_show', { 'id': 1}) }}">Details&nbsp;&raquo;</a>
+    </div>
+{% endfor %}
+{% if showLoadMore %}
+    {# There goes the link to load more!!! #}
+    <div class="row" id="more{{ offset }}">
+        <div class="offset5"><a href="#" id="{{ offset }}" class="btn large more-flocks">Show more flocks</a></div>
+    </div>
+{% else %}
+    <div class="row">
+        <div class="offset5">End of the road, my dear friend.</div>
+    </div>
+{% endif %}
