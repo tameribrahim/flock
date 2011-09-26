@@ -96,11 +96,18 @@ class Flock
      */
     protected $attendees;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Activity", mappedBy="flock")
+     */
+    protected $activity;
+
     public function __construct() {
         $date = new \DateTime('+1 hours');
         $date->setTime(date('H', $date->getTimestamp()), 0, 0);
         $this->setStartsAt($date);
+
         $this->attendees = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->activity = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function __toString()
@@ -465,10 +472,30 @@ class Flock
     /**
      * Get attendees
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getAttendees()
     {
         return $this->attendees;
+    }
+
+    /**
+     * Add activity
+     *
+     * @param Flock\MainBundle\Entity\Activity $activity
+     */
+    public function addActivity(\Flock\MainBundle\Entity\Activity $activity)
+    {
+        $this->activity[] = $activity;
+    }
+
+    /**
+     * Get activity
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getActivity()
+    {
+        return $this->activity;
     }
 }

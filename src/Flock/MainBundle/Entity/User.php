@@ -75,12 +75,18 @@ class User extends BaseUser implements \Serializable
      */
     protected $flocksAttending;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Activity", mappedBy="user")
+     */
+    protected $activity;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->flocksCreated = new ArrayCollection();
         $this->flocksAttending = new ArrayCollection();
+        $this->activity = new ArrayCollection();
         $this->userCulture = 'en';
     }
 
@@ -344,5 +350,25 @@ class User extends BaseUser implements \Serializable
     public function getFlocksAttending()
     {
         return $this->flocksAttending;
+    }
+
+    /**
+     * Add activity
+     *
+     * @param Flock\MainBundle\Entity\Activity $activity
+     */
+    public function addActivity(\Flock\MainBundle\Entity\Activity $activity)
+    {
+        $this->activity[] = $activity;
+    }
+
+    /**
+     * Get activity
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getActivity()
+    {
+        return $this->activity;
     }
 }
