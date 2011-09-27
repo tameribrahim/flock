@@ -176,9 +176,8 @@ class User extends BaseUser implements \Serializable
     }
 
     /**
-     * Get profileImageUrl
-     *
-     * @return string
+     * @param string $size
+     * @return mixed
      */
     public function getProfileImageUrl($size = 'normal')
     {

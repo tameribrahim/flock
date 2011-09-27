@@ -33,32 +33,35 @@ class TwitterUserProvider implements UserProviderInterface
         return $this->userManager->findUserBy(array('twitterID' => $twitterID));
     }
 
-    function loadUserByUsername($username)
+    function loadUserByUsername($username, $skipTwitterVerify = false)
     {
         $user = $this->findUserByTwitterID($username);
 
         if (empty($user)) { //TODO: Update this everytime the user logs in
+            if (!empty($twitterData)) {
+                $user = $this->userManager->createUser();
+                $user->setEnabled(true);
+                $user->setPassword('');
+                $user->setAlgorithm('');
+            }
+        }
+
+        if (!$skipTwitterVerify) {
             try {
                 $twitterData = $this->twitter->get('account/verify_credentials');
             } catch (\Exception $e) {
                 $twitterData = null;
             }
 
-            if (!empty($twitterData)) {
-                $user = $this->userManager->createUser();
-                $user->setEnabled(true);
-                $user->setPassword('');
-                $user->setAlgorithm('');
-                $user->setTwitterData($twitterData, $this->session->get('access_token'), $this->session->get('access_token_secret'));
-            }
-
-            if (count($this->validator->validate($user, 'twitter'))) {
-                // TODO: the user was found obviously, but doesnt match our expectations, do something smart
-                throw new UsernameNotFoundException('The Twitter user could not be stored');
-            }
-
-            $this->userManager->updateUser($user);
+            $user->setTwitterData($twitterData, $this->session->get('access_token'), $this->session->get('access_token_secret'));
         }
+
+        if (count($this->validator->validate($user, 'twitter'))) {
+            // TODO: the user was found obviously, but doesnt match our expectations, do something smart
+            throw new UsernameNotFoundException('The Twitter user could not be stored');
+        }
+
+        $this->userManager->updateUser($user);
 
         if (empty($user)) {
             throw new UsernameNotFoundException('The user is not authenticated on twitter');
@@ -76,7 +79,7 @@ class TwitterUserProvider implements UserProviderInterface
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
-        return $this->loadUserByUsername($user->getTwitterID());
+        return $this->loadUserByUsername($user->getTwitterID(), true);
     }
 
     public function supportsClass($class)

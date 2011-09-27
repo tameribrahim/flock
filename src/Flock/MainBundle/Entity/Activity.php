@@ -102,6 +102,7 @@ class Activity
 
     public function getActivityAsString()
     {
+        $actionAsString = '';
         switch ($this->getActivityType()) {
             case ActivityRepository::ACTIVITY_CREATED_FLOCK:
                 $actionAsString = "created the flock";
