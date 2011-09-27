@@ -2,6 +2,12 @@
 {% block title %}{{ flock.name }}{% endblock %}
 {% block content %}
     <div class="page-header">
+        {% if app.session.hasFlash('notice') %}
+            <div class="alert-message block-message info" data-alert="alert">
+              <a class="close" href="#">×</a>
+              <p><strong>{{ app.session.flash('notice') }}</strong></p>
+            </div>
+        {% endif %}
         <h1>{{ flock.name }}
         {% if flock.website %}
             <small><a href="{{ flock.website }}" target="_blank">{{ flock.website }}</a></small></h1>
@@ -87,8 +93,8 @@
                       }
                     }).render().start();
                     </script>
-                </div>
             {% endif %}
+        </div>
     </div>
 {% endblock %}
 

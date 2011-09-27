@@ -18,7 +18,7 @@
 {% block content %}
     <div class="row">
         <div class="span10">
-            <form class="form-stacked" action="{{ path('flock_create') }}" method="post" {{ form_enctype(form) }}>
+            <form class="form-stacked" action="{{ path('flock_edit', { 'id': flock.id }) }}" method="post" {{ form_enctype(form) }}>
                 <fieldset>
                     <legend>Great to know you are planning something. Tell us more about it.</legend>
                     {{ form_errors(form) }}
@@ -80,7 +80,7 @@
                     </div>
                     {{ form_rest(form) }}
                     <div class="actions">
-                        <input type="submit" class="btn primary" value="Create flock">
+                        <input type="submit" class="btn primary" value="Update">
                     </div>
                 </fieldset>
             </form>

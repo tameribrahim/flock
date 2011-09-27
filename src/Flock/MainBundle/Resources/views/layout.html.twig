@@ -44,6 +44,7 @@
 
 {% block javascripts %}
     <script src="{{ asset('bundles/flockmain/js/jquery-1.5.2.min.js') }}"></script>
+    <script src="{{ asset('bundles/flockmain/js/bootstrap-alerts.js') }}"></script>
     <script type="text/javascript">
     $(document).ready(function(){
         $("body").bind("click", function (e) {
@@ -54,6 +55,10 @@
             var $li = $(this).parent("li").toggleClass('open');
             return false;
         });
+
+        setTimeout(function() {
+            $(".alert-message").children('.close').click();
+        }, 3000);
     });
     </script>
     {% block inner_javascripts %}{% endblock %}

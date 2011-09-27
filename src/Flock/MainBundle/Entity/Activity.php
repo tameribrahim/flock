@@ -35,7 +35,7 @@ class Activity
     protected $user;
 
     /**
-     * @ORM\Column(name="user_id", type="integer")
+     * @ORM\Column(name="user_id", type="integer", nullable="true")
      */
     protected $userID;
 
@@ -46,7 +46,7 @@ class Activity
     protected $flock;
 
     /**
-     * @ORM\Column(name="flock_id", type="integer")
+     * @ORM\Column(name="flock_id", type="integer", nullable="true")
      */
     protected $flockID;
 
@@ -59,6 +59,11 @@ class Activity
      * @ORM\Column(name="twitter_id", type="string", length="100")
      */
     protected $twitterID;
+
+    /**
+     * @ORM\Column(name="twitter_profile_image_url", type="string", length="255")
+     */
+    protected $twitterProfileImageUrl;
 
     /**
      * @ORM\Column(name="flock_name", type="string", length="255")
@@ -99,15 +104,19 @@ class Activity
     {
         switch ($this->getActivityType()) {
             case ActivityRepository::ACTIVITY_CREATED_FLOCK:
-                $actionAsString = "created flock";
+                $actionAsString = "created the flock";
                 break;
 
             case ActivityRepository::ACTIVITY_JOINED_FLOCK:
-                $actionAsString = "joined flock";
+                $actionAsString = "joined the flock";
+                break;
+
+            case ActivityRepository::ACTIVITY_UNJOINED_FLOCK:
+                $actionAsString = "unjoined the flock";
                 break;
 
             case ActivityRepository::ACTIVITY_UPDATED_FLOCK:
-                $actionAsString = "updated flock";
+                $actionAsString = "updated the flock";
                 break;
         }
 
@@ -364,10 +373,30 @@ class Activity
     /**
      * Get userID
      *
-     * @return integer 
+     * @return integer
      */
     public function getUserID()
     {
         return $this->userID;
+    }
+
+    /**
+     * Set twitterProfileImageUrl
+     *
+     * @param string $twitterProfileImageUrl
+     */
+    public function setTwitterProfileImageUrl($twitterProfileImageUrl)
+    {
+        $this->twitterProfileImageUrl = $twitterProfileImageUrl;
+    }
+
+    /**
+     * Get twitterProfileImageUrl
+     *
+     * @return string
+     */
+    public function getTwitterProfileImageUrl()
+    {
+        return $this->twitterProfileImageUrl;
     }
 }

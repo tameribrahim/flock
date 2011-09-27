@@ -27,9 +27,12 @@ class ActivityRepository extends EntityRepository
         $activity = new Activity();
         $activity->setActivityType($activityType);
         $activity->setUser($user);
+        $activity->setUserID($user->getId());
         $activity->setFlock($flock);
+        $activity->setFlockID($flock->getId());
         $activity->setUsername($user->getScreenName());
         $activity->setTwitterID($user->getTwitterID());
+        $activity->setTwitterProfileImageUrl($user->getProfileImageUrl('mini'));
         $activity->setFlockName($flock->getName());
         $activity->setStartsAt($flock->getStartsAt());
         $activity->setEndsAt($flock->getEndsAt());
@@ -38,8 +41,8 @@ class ActivityRepository extends EntityRepository
         $this->getEntityManager()->flush();
     }
 
-    public function getLatestActivity()
+    public function getLatestActivity($limit = 10)
     {
-        return $this->findBy(array('activityType' => array(1,3,4)), array('createdAt' => 'DESC'), 10, 0);
+        return $this->findBy(array('activityType' => array(1,2,3,4)), array('createdAt' => 'DESC'), $limit, 0);
     }
 }

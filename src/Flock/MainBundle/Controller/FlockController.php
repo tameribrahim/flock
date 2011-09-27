@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Component\HttpFoundation\Request;
 use Flock\MainBundle\Repository\ActivityRepository;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class FlockController extends Controller
 {
@@ -42,6 +43,8 @@ class FlockController extends Controller
                 //add activity
                 $this->getDoctrine()->getRepository('FlockMainBundle:Activity')
                     ->addActivity($this->get('security.context')->getToken()->getUser(), $flock, ActivityRepository::ACTIVITY_CREATED_FLOCK);
+
+                $this->get('session')->setFlash('notice', "There you go! You have created a new flock!");
 
                 return new RedirectResponse($this->generateUrl('flock_show', array('id' => $flock->getId())));
             }
@@ -152,15 +155,18 @@ class FlockController extends Controller
     /**
      * @Extra\Route("/{id}/edit", name="flock_edit")
      * @Extra\ParamConverter("flock", class="FlockMainBundle:Flock")
-     * @Extra\Template("FlockMainBundle:Flock:show.html.twig")
+     * @Extra\Template("FlockMainBundle:Flock:edit.html.twig")
      *
      * @param \Flock\MainBundle\Entity\Flock $flock
      * @return array
      */
     public function editAction(Flock $flock)
     {
-        //TODO: proceed only if Flock creator is the session user
         $user = $this->get('security.context')->getToken()->getUser();
+
+        if ($flock->getUser() != $user) {
+            throw new AccessDeniedException();
+        }
 
         $em = $this->get('doctrine')->getEntityManager();
         $form = $this->buildForm($flock);
@@ -175,12 +181,13 @@ class FlockController extends Controller
                 //add activity
                 $this->getDoctrine()->getRepository('FlockMainBundle:Activity')
                     ->addActivity($this->get('security.context')->getToken()->getUser(), $flock, ActivityRepository::ACTIVITY_UPDATED_FLOCK);
+                $this->get('session')->setFlash('notice', 'Updated your flock information.');
 
                 return new RedirectResponse($this->generateUrl('flock_show', array('id' => $flock->getId())));
             }
         }
 
-        return array('form' => $form->createView());
+        return array('form' => $form->createView(), 'flock' => $flock);
     }
 
     /**
@@ -193,7 +200,8 @@ class FlockController extends Controller
     public function toggleJoinAction(Flock $flock)
     {
         $user = $this->get('security.context')->getToken()->getUser();
-        $this->getDoctrine()->getRepository('FlockMainBundle:Attendee')->addOrRemoveAttendee($flock, $user);
+        $message = $this->getDoctrine()->getRepository('FlockMainBundle:Attendee')->addOrRemoveAttendee($flock, $user);
+        $this->get('session')->setFlash('notice', $message);
 
         return new RedirectResponse($this->generateUrl('flock_show',array('id' => $flock)));
     }

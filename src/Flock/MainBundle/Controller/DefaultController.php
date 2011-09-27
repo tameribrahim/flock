@@ -18,7 +18,7 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $activities = $this->getDoctrine()->getRepository('FlockMainBundle:Activity')
-            ->getLatestActivity();
+            ->getLatestActivity(20);
 
         return array('activities' => $activities);
     }

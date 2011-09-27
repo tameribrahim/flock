@@ -25,6 +25,7 @@ class AttendeeRepository extends EntityRepository
             $this->getEntityManager()->getRepository('FlockMainBundle:Activity')
                 ->addActivity($user, $flock, ActivityRepository::ACTIVITY_UNJOINED_FLOCK);
 
+            $message = "You have unjoined ".$flock->getName();
         } else {
             $guest = new Attendee();
             $guest->setFlock($flock);
@@ -34,8 +35,12 @@ class AttendeeRepository extends EntityRepository
             //add activity
             $this->getEntityManager()->getRepository('FlockMainBundle:Activity')
                 ->addActivity($user, $flock, ActivityRepository::ACTIVITY_JOINED_FLOCK);
+
+            $message = "You have joined ".$flock->getName();
         }
         $this->getEntityManager()->flush();
+
+        return $message;
     }
 
     public function getAttendeeCount(Flock $flock)
