@@ -3,6 +3,7 @@
 {% block content %}
     <div id="content">
         <h2>Welcome to Flock! <small>A place where you can find interesting events and people.</small>&nbsp;&nbsp;<a href="{{ path('flock_create') }}" class="btn info">Create a flock</a></h2>
+        <div class="info">Currently hosting <span class="highlight">{{ flocksCount }}</span>&nbsp;flocks and <span class="highlight">{{ usersCount }}</span>&nbsp;people</div>
         <div class="title">Latest activity</div>
         <div class="info">
             {% for activity in activities %}

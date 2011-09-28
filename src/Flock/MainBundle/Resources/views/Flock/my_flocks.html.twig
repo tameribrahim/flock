@@ -1,4 +1,7 @@
 {% extends "FlockMainBundle::layout.html.twig" %}
+
+{% block title %}My flocks{% endblock %}
+
 {% block content %}
     <div id="content">
         <div id="flock-list">
@@ -8,7 +11,7 @@
                     <strong>{{ flock.name }}</strong>&nbsp;on&nbsp;<strong>{{ flock.startsAt.format('d M, Y H:i A') }}</strong>&nbsp;<a href="{{ path('flock_show', { 'id': flock.id }) }}">Details&nbsp;&raquo;</a>&nbsp;&nbsp;<a href="{{ path('flock_edit', { 'id': flock.id }) }}">[Edit]</a>
                 </div>
             {% else %}
-                You haven't created any flock yet!
+                <div class="info">You haven't created any flock yet!</div>
             {% endfor %}
 
             <div class="title">Flocks you are attending</div>
@@ -17,7 +20,7 @@
                     <strong>{{ attendee.flock.name }}</strong>&nbsp;on&nbsp;<strong>{{ attendee.flock.startsAt.format('d M, Y H:i A') }}</strong>&nbsp;<a href="{{ path('flock_show', { 'id': attendee.flock.id }) }}">Details&nbsp;&raquo;</a>
                 </div>
             {% else %}
-                You haven't created any flock yet!
+                <div class="info">You are not attending any flock yet!</div>
             {% endfor %}
         </div>
     </div>

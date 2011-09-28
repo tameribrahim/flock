@@ -20,7 +20,17 @@ class DefaultController extends Controller
         $activities = $this->getDoctrine()->getRepository('FlockMainBundle:Activity')
             ->getLatestActivity(20);
 
-        return array('activities' => $activities);
+        $flockCount = $this->getDoctrine()->getRepository('FlockMainBundle:Flock')
+            ->getActiveFlocksCount();
+
+        $userCount = $this->getDoctrine()->getRepository('FlockMainBundle:User')
+            ->getActiveUsersCount();
+
+        return array(
+            'activities' => $activities,
+            'flocksCount' => $flockCount,
+            'usersCount' =>$userCount,
+        );
     }
 
     /**
@@ -30,7 +40,11 @@ class DefaultController extends Controller
      */
     public function loginAction()
     {
-        return $this->render('FlockMainBundle:Default:index.html.twig', array());
+        if ($this->get('security.context')->getToken()->getUser() instanceof \Flock\MainBundle\Entity\User) {
+            return new RedirectResponse($this->generateUrl('flock_home'));
+        }
+
+        return $this->render('FlockMainBundle:Default:login.html.twig', array());
     }
 
     /**

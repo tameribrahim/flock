@@ -1,0 +1,16 @@
+{% extends "FlockMainBundle::layout.html.twig" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <h3>To login to Flock you need to have a Twitter account.</h3>
+        <a href="{{ path('twitter_auth') }}" class="sign-in-button"><img src="{{ asset('bundles/flockmain/images/sign-in-with-twitter-d.png') }}" alt=""></a>
+    </div>
+{% endblock %}
+
+{% block menu %}
+    <li class="active"><a href="{{ path('flock_home') }}">Home</a></li>
+    <li><a href="{{ path('flocks_list') }}">Flocks</a></li>
+    <li><a href="{{ path('flock_about') }}">About</a></li>
+{% endblock %}

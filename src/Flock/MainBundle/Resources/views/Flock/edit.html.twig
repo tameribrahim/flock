@@ -1,5 +1,6 @@
 {% extends "FlockMainBundle::layout.html.twig" %}
 
+{% block title %}Edit flock: {{ flock.name }}{% endblock %}
 {% form_theme form _self %}
 
 {% block field_errors %}
@@ -89,8 +90,11 @@
 {% endblock %}
 
 {% block inner_stylesheets %}
-    <link href="{{ asset('bundles/flockmain/css/smoothness/jquery-ui-1.8.7.custom.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('bundles/flockmain/css/jquery.ui.timepicker.css') }}" rel="stylesheet" type="text/css" />
+    {% stylesheets filter='yui_css'
+                    '@FlockMainBundle/Resources/public/css/smoothness/jquery-ui-1.8.7.custom.css'
+                    '@FlockMainBundle/Resources/public/css/jquery.ui.timepicker.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}" rel="stylesheet" type="text/css" />
+    {% endstylesheets %}
     <style type="text/css">
         div.ui-datepicker {
             font-size: 12px;
@@ -101,9 +105,12 @@
 {% block inner_javascripts %}
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/i18n/jquery-ui-i18n.min.js"></script>
-    <script src="{{ asset('bundles/flockmain/js/jquery.ui.timepicker.js') }}"></script>
-    <script src="{{ asset('bundles/flockmain/js/date.js') }}"></script>
-    <script src="{{ asset('bundles/flockmain/js/flock/map.js') }}"></script>
+    {% javascripts filter='yui_js'
+                    '@FlockMainBundle/Resources/public/js/jquery.ui.timepicker.js'
+                    '@FlockMainBundle/Resources/public/js/date.js'
+                    '@FlockMainBundle/Resources/public/js/flock/map.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 
     <script type="text/javascript">
         $(document).ready(function() {

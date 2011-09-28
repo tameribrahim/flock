@@ -1,7 +1,10 @@
 {% extends "::base.html.twig" %}
 {% block stylesheets %}
-    <link href="{{ asset('bundles/flockmain/css/bootstrap.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('bundles/flockmain/css/style.css') }}" rel="stylesheet" type="text/css" />
+    {% stylesheets filter='yui_css'
+                    '@FlockMainBundle/Resources/public/css/bootstrap.css'
+                    '@FlockMainBundle/Resources/public/css/style.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}" rel="stylesheet" type="text/css" />
+    {% endstylesheets %}
     {% block inner_stylesheets %}{% endblock %}
 {% endblock %}
 
@@ -43,8 +46,11 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('bundles/flockmain/js/jquery-1.5.2.min.js') }}"></script>
-    <script src="{{ asset('bundles/flockmain/js/bootstrap-alerts.js') }}"></script>
+    {% javascripts filter='yui_js'
+                    '@FlockMainBundle/Resources/public/js/jquery-1.5.2.min.js'
+                    '@FlockMainBundle/Resources/public/js/bootstrap-alerts.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
     <script type="text/javascript">
     $(document).ready(function(){
         $("body").bind("click", function (e) {

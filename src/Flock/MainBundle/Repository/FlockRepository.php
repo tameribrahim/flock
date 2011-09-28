@@ -32,7 +32,8 @@ class FlockRepository extends EntityRepository
 
     public function getActiveFlocksCount()
     {
-        $query = $this->getEntityManager()->createQuery('SELECT COUNT(f.id) FROM '.$this->getEntityName().' f');
+        $query = $this->getEntityManager()->createQuery('SELECT COUNT(f.id) FROM '.$this->getEntityName().' f WHERE f.startsAt > :currentDateTime');
+        $query->setParameter('currentDateTime', new \DateTime('now', new \DateTimeZone('Pacific/Honolulu')));
 
         return $query->getSingleScalarResult();
     }

@@ -38,15 +38,13 @@ class TwitterUserProvider implements UserProviderInterface
         $user = $this->findUserByTwitterID($username);
 
         if (empty($user)) { //TODO: Update this everytime the user logs in
-            if (!empty($twitterData)) {
                 $user = $this->userManager->createUser();
                 $user->setEnabled(true);
                 $user->setPassword('');
                 $user->setAlgorithm('');
-            }
         }
 
-        if (!$skipTwitterVerify) {
+        if (!$skipTwitterVerify && $user) {
             try {
                 $twitterData = $this->twitter->get('account/verify_credentials');
             } catch (\Exception $e) {
