@@ -61,6 +61,7 @@
 
 [TwitterOAuth]
     git=http://github.com/kertz/twitteroauth.git
+    target=twitteroauth
 
 [FOSTwitterBundle]
     git=http://github.com/FriendsOfSymfony/FOSTwitterBundle.git
