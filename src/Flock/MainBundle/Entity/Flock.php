@@ -110,6 +110,7 @@ class Flock
         $date = new \DateTime('+1 hours');
         $date->setTime(date('H', $date->getTimestamp()), 0, 0);
         $this->setStartsAt($date);
+        $this->deleted = false;
 
         $this->attendees = new \Doctrine\Common\Collections\ArrayCollection();
         $this->activity = new \Doctrine\Common\Collections\ArrayCollection();
