@@ -1,0 +1,15 @@
+{% extends "FlockMainBundle::layout.html.twig" %}
+
+{% block title %}Flock.io{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <h2>This flock has been deleted by the creator!</h2>
+    </div>
+{% endblock %}
+
+{% block menu %}
+    <li><a href="{{ path('flock_home') }}">Home</a></li>
+    <li><a href="{{ path('flocks_list') }}">Flocks</a></li>
+    <li><a href="{{ path('flock_about') }}">About</a></li>
+{% endblock %}

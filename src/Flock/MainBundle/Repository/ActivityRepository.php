@@ -19,8 +19,9 @@ class ActivityRepository extends EntityRepository
     const ACTIVITY_UNJOINED_FLOCK = 2;
     const ACTIVITY_CREATED_FLOCK = 3;
     const ACTIVITY_UPDATED_FLOCK = 4;
-    const ACTIVITY_RESCHEDULED_FLOCK = 5;
-    const ACTIVITY_CHANGED_FLOCK_NAME = 6;
+    const ACTIVITY_DELETED_FLOCK = 5;
+    const ACTIVITY_RESCHEDULED_FLOCK = 6;
+    const ACTIVITY_CHANGED_FLOCK_NAME = 7;
 
     public function addActivity(User $user, Flock $flock, $activityType)
     {
@@ -43,6 +44,6 @@ class ActivityRepository extends EntityRepository
 
     public function getLatestActivity($limit = 10)
     {
-        return $this->findBy(array('activityType' => array(1,2,3,4)), array('createdAt' => 'DESC'), $limit, 0);
+        return $this->findBy(array('activityType' => array(1,2,3,4,5)), array('createdAt' => 'DESC'), $limit, 0);
     }
 }

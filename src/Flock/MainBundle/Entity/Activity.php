@@ -119,6 +119,10 @@ class Activity
             case ActivityRepository::ACTIVITY_UPDATED_FLOCK:
                 $actionAsString = "updated the flock";
                 break;
+
+            case ActivityRepository::ACTIVITY_DELETED_FLOCK:
+                $actionAsString = "deleted the flock";
+                break;
         }
 
         return $actionAsString;

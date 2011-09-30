@@ -6,16 +6,16 @@
     <div id="content">
         <div id="flock-list">
             <div class="title">Flocks you created</div>
-            {% for flock in app.user.flocksCreated %}
+            {% for flock in flocksCreated %}
                 <div class="flock-list-item">
-                    <strong>{{ flock.name }}</strong>&nbsp;on&nbsp;<strong>{{ flock.startsAt.format('d M, Y H:i A') }}</strong>&nbsp;<a href="{{ path('flock_show', { 'id': flock.id }) }}">Details&nbsp;&raquo;</a>&nbsp;&nbsp;<a href="{{ path('flock_edit', { 'id': flock.id }) }}">[Edit]</a>
+                    <strong>{{ flock.name }}</strong>&nbsp;on&nbsp;<strong>{{ flock.startsAt.format('d M, Y H:i A') }}</strong>&nbsp;<a href="{{ path('flock_show', { 'id': flock.id }) }}">Details&nbsp;&raquo;</a>&nbsp;&nbsp;<a href="{{ path('flock_edit', { 'id': flock.id }) }}">[Edit]</a>&nbsp;&nbsp;<a href="{{ path('flock_delete', { 'id': flock.id }) }}">[Delete]</a>
                 </div>
             {% else %}
                 <div class="info">You haven't created any flock yet!</div>
             {% endfor %}
 
             <div class="title">Flocks you are attending</div>
-            {% for attendee in app.user.flocksAttending %}
+            {% for attendee in flocksAttending %}
                 <div class="flock-list-item">
                     <strong>{{ attendee.flock.name }}</strong>&nbsp;on&nbsp;<strong>{{ attendee.flock.startsAt.format('d M, Y H:i A') }}</strong>&nbsp;<a href="{{ path('flock_show', { 'id': attendee.flock.id }) }}">Details&nbsp;&raquo;</a>
                 </div>

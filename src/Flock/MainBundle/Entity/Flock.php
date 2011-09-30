@@ -101,6 +101,11 @@ class Flock
      */
     protected $activity;
 
+    /**
+     * @ORM\Column(name="deleted", type="boolean")
+     */
+    protected $deleted;
+
     public function __construct() {
         $date = new \DateTime('+1 hours');
         $date->setTime(date('H', $date->getTimestamp()), 0, 0);
@@ -497,5 +502,21 @@ class Flock
     public function getActivity()
     {
         return $this->activity;
+    }
+
+    /**
+     * @return void
+     */
+    public function delete()
+    {
+        $this->deleted = true;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDeleted()
+    {
+        return $this->deleted;
     }
 }

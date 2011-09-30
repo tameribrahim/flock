@@ -16,7 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Component\HttpFoundation\Request;
 use Flock\MainBundle\Repository\ActivityRepository;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class FlockController extends Controller
 {
     /**
@@ -106,19 +106,46 @@ class FlockController extends Controller
      */
     public function myFlocksAction()
     {
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        $flocksCreated = $this->getDoctrine()->getRepository('FlockMainBundle:Flock')->findBy(array('user' => $user->getId()));
+        $flocksAttending = $this->getDoctrine()->getRepository('FlockMainBundle:Attendee')->findBy(array('user' => $user->getId()));
+
+        return array(
+            'flocksCreated' => $flocksCreated,
+            'flocksAttending' => $flocksAttending,
+        );
+    }
+
+    /**
+     * @Extra\Route("/deleted", name="deleted_flock")
+     * @Extra\Template("FlockMainBundle:Flock:deleted_flock.html.twig")
+     *
+     * @return array
+     */
+    public function deletedFlockAction()
+    {
         return array();
     }
 
     /**
      * @Extra\Route("/{id}", name="flock_show")
-     * @Extra\ParamConverter("flock", class="FlockMainBundle:Flock")
      * @Extra\Template("FlockMainBundle:Flock:show.html.twig")
      *
-     * @param \Flock\MainBundle\Entity\Flock $flock
      * @return array
      */
-    public function showAction(Flock $flock)
+    public function showAction()
     {
+        $flock = $this->getDoctrine()->getRepository('FlockMainBundle:Flock')->findOneBy(array('id' => $this->getRequest()->get('id'), 'ignore_delete' => true));
+
+        if (!($flock instanceof Flock)) {
+            throw new NotFoundHttpException("I guess you are looking for something that doesn't exist!");
+        }
+
+        if ($flock->isDeleted()) {
+            return new RedirectResponse($this->generateUrl('deleted_flock'));
+        }
+
         $defaultTweet = "Join me for ".$flock->getName();
         if ($flock->getHashTag()) {
             $defaultTweet .= " ".$flock->getHashTag();
@@ -188,6 +215,34 @@ class FlockController extends Controller
         }
 
         return array('form' => $form->createView(), 'flock' => $flock);
+    }
+
+    /**
+     * @Extra\Route("/{id}/delete", name="flock_delete")
+     * @Extra\ParamConverter("flock", class="FlockMainBundle:Flock")
+     *
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @param \Flock\MainBundle\Entity\Flock $flock
+     * @return void
+     */
+    public function deleteAction(Flock $flock)
+    {
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        if ($flock->getUser() != $user) {
+            throw new AccessDeniedException();
+        }
+
+        $flock->delete();
+        $this->getDoctrine()->getEntityManager()->persist($flock);
+        $this->getDoctrine()->getEntityManager()->flush();
+
+        //add activity
+        $this->getDoctrine()->getRepository('FlockMainBundle:Activity')
+            ->addActivity($this->get('security.context')->getToken()->getUser(), $flock, ActivityRepository::ACTIVITY_DELETED_FLOCK);
+        $this->get('session')->setFlash('notice', 'Delted the flock');
+
+        return new RedirectResponse($this->generateUrl('my_flocks'));
     }
 
     /**
