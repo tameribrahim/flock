@@ -109,7 +109,7 @@ class FlockController extends Controller
         $user = $this->get('security.context')->getToken()->getUser();
 
         $flocksCreated = $this->getDoctrine()->getRepository('FlockMainBundle:Flock')->findBy(array('user' => $user->getId()));
-        $flocksAttending = $this->getDoctrine()->getRepository('FlockMainBundle:Attendee')->findBy(array('user' => $user->getId()));
+        $flocksAttending = $this->getDoctrine()->getRepository('FlockMainBundle:Attendee')->getFlocksUserIsAttending($user);
 
         return array(
             'flocksCreated' => $flocksCreated,

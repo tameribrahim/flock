@@ -50,4 +50,20 @@ class AttendeeRepository extends EntityRepository
 
         return $query->getSingleScalarResult();
     }
+
+    public function getFlocksUserIsAttending(User $user)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->select()
+            ->leftJoin('a.flock', 'f')
+            ->where('a.user = :user_id')
+            ->andWhere('f.deleted != TRUE')
+            ->andWhere('f.startsAt > :currentDateTime')
+            ->orderBy('f.startsAt','ASC')
+            ->setParameter('currentDateTime', new \DateTime('now', new \DateTimeZone('Pacific/Honolulu')))
+            ->setParameter('user_id', $user->getId())
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }
