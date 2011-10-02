@@ -3,8 +3,7 @@ app/bootstrap*
 app/cache/*
 app/logs/*
 build/
-/vendor/
-app/config/parameters.ini
+/vendor/*
 .idea/
 web/js/*
 web/css/*
