@@ -1,1 +1,3 @@
-Flock - bringing Twitter together
+Flock (http://flock.io) is a simple event manager built around Twitter API using Symfony2, Doctrine2, Assetic and Twitter Bootstrap as the design base.
+
+I have not written any tests yet, I will write some once I get time.
