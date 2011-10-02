@@ -59,7 +59,7 @@
     target=/bundles/Symfony/Bundle/AsseticBundle
     version=v1.0.0RC2
 
-[twitteroauth]
+[TwitterOAuth]
     git=http://github.com/kertz/twitteroauth.git
     target=twitteroauth
 
