@@ -63,7 +63,7 @@ jms_security_extra:
 fos_twitter:
     file: %kernel.root_dir%/../vendor/twitteroauth/twitteroauth/twitteroauth.php
     consumer_key: anecYqd0HV7sxpA7LAHJA
-    consumer_secret: K9CUbgVvU2I7DZj9yIj34vLRNugb5VVpxOePWAV50g
+    consumer_secret: K9CUbgVvU2I7DZj9yIj34vLRNugb5VVpxOePWAV50g #This secret won't work :)
     callback_url: http://flock.dev/app_dev.php/login_check
 
 fos_user:
